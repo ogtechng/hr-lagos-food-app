@@ -1,0 +1,319 @@
+- generic [active] [ref=e1]:
+  - generic [ref=e2]:
+    - banner [ref=e3]:
+      - generic [ref=e4]:
+        - generic [ref=e6]: My Lagos Food App
+        - navigation [ref=e7]:
+          - generic [ref=e8] [cursor=pointer]: Jobs
+          - generic [ref=e9] [cursor=pointer]: About
+          - button "Sign In" [ref=e10]
+          - button "Get Started" [ref=e11]
+    - generic [ref=e13]:
+      - generic [ref=e14]:
+        - heading "Design System" [level=1] [ref=e15]
+        - paragraph [ref=e16]: Visual reference for all UI primitives. This page is the source of truth for AI-generated pages.
+      - button "View on GitHub" [ref=e18]:
+        - img
+        - text: View on GitHub
+    - generic [ref=e20]:
+      - heading "Forms" [level=2] [ref=e21]
+      - heading "Buttons" [level=3] [ref=e22]
+      - generic [ref=e24]:
+        - generic [ref=e25]:
+          - button "Default" [ref=e26]
+          - button "Secondary" [ref=e27]
+          - button "Destructive" [ref=e28]
+          - button "Outline" [ref=e29]
+          - button "Ghost" [ref=e30]
+          - button "Link" [ref=e31]
+        - generic [ref=e32]:
+          - button "X Small" [ref=e33]
+          - button "Small" [ref=e34]
+          - button "Default" [ref=e35]
+          - button "Large" [ref=e36]
+          - button [ref=e37]:
+            - img
+        - generic [ref=e38]:
+          - button "Disabled" [disabled]
+          - button "With Icon" [ref=e39]:
+            - img
+            - text: With Icon
+      - heading "Inputs & Textareas" [level=3] [ref=e40]
+      - generic [ref=e42]:
+        - generic [ref=e43]:
+          - generic [ref=e44]: Default Input
+          - textbox "Default Input" [ref=e45]:
+            - /placeholder: Enter text...
+        - generic [ref=e46]:
+          - generic [ref=e47]: Disabled
+          - textbox "Disabled" [disabled]:
+            - /placeholder: Disabled input
+        - generic [ref=e48]:
+          - generic [ref=e49]: With Error
+          - textbox "With Error" [invalid] [ref=e50]:
+            - /placeholder: Invalid value
+          - paragraph [ref=e51]: This field has an error.
+        - generic [ref=e52]:
+          - generic [ref=e53]: With Icon
+          - generic [ref=e54]:
+            - img [ref=e55]
+            - textbox "With Icon" [ref=e58]:
+              - /placeholder: Search...
+        - generic [ref=e59]:
+          - generic [ref=e60]: Textarea
+          - textbox "Textarea" [ref=e61]:
+            - /placeholder: Enter a longer description...
+      - heading "Select" [level=3] [ref=e62]
+      - generic [ref=e64]:
+        - generic [ref=e65]:
+          - generic [ref=e66]: Department
+          - combobox [ref=e67]:
+            - generic [ref=e68]: Select department
+            - img: ▼
+          - textbox [ref=e69]
+        - generic [ref=e70]:
+          - generic [ref=e71]: Disabled
+          - combobox [disabled] [ref=e72]:
+            - generic [ref=e73]: Cannot select
+            - img: ▼
+          - textbox [disabled] [ref=e74]
+      - heading "Checkbox & Radio Group" [level=3] [ref=e75]
+      - generic [ref=e77]:
+        - generic [ref=e78]:
+          - generic [ref=e79]: Checkbox
+          - generic [ref=e80]:
+            - checkbox [ref=e81]
+            - checkbox [ref=e82]
+            - generic [ref=e83]: I agree to the terms
+          - generic [ref=e84]:
+            - checkbox [disabled] [ref=e85]
+            - checkbox [disabled] [ref=e86]
+            - generic [ref=e87]: Disabled option
+        - generic [ref=e88]:
+          - generic [ref=e89]: Radio Group
+          - radiogroup [ref=e90]:
+            - generic [ref=e91]:
+              - radio [checked] [ref=e92]
+              - radio [checked] [ref=e95]
+              - generic [ref=e96]: Full Time
+            - generic [ref=e97]:
+              - radio [ref=e98]
+              - radio [ref=e99]
+              - generic [ref=e100]: Part Time
+            - generic [ref=e101]:
+              - radio [disabled] [ref=e102]
+              - radio [disabled] [ref=e103]
+              - generic [ref=e104]: Contract (unavailable)
+      - heading "Form (react-hook-form + Zod)" [level=3] [ref=e105]
+      - generic [ref=e108]:
+        - generic [ref=e109]:
+          - generic [ref=e110]: Name
+          - textbox "Name" [ref=e111]:
+            - /placeholder: Enter your name
+        - generic [ref=e112]:
+          - generic [ref=e113]: Email
+          - textbox "Email" [ref=e114]:
+            - /placeholder: Enter your email
+        - button "Submit" [ref=e115]
+      - heading "File Upload" [level=3] [ref=e116]
+      - generic [ref=e120] [cursor=pointer]:
+        - paragraph [ref=e121]: Upload Resume / CV
+        - paragraph [ref=e122]: PDF, DOC, or DOCX (max 5MB)
+    - generic [ref=e124]:
+      - heading "Feedback" [level=2] [ref=e125]
+      - heading "Alerts" [level=3] [ref=e126]
+      - generic [ref=e128]:
+        - alert [ref=e129]:
+          - img [ref=e130]
+          - generic [ref=e132]: Information
+          - generic [ref=e133]: A new job posting was published successfully.
+        - alert [ref=e134]:
+          - img [ref=e135]
+          - generic [ref=e139]: Error
+          - generic [ref=e140]: Failed to save changes. Please try again.
+        - alert [ref=e141]:
+          - img [ref=e142]
+          - generic [ref=e145]: Success
+          - generic [ref=e146]: Application status has been updated.
+        - alert [ref=e147]:
+          - img [ref=e148]
+          - generic [ref=e150]: Warning
+          - generic [ref=e151]: This action cannot be undone.
+      - heading "Badges" [level=3] [ref=e152]
+      - generic [ref=e154]:
+        - generic [ref=e155]:
+          - generic [ref=e156]: Default
+          - generic [ref=e157]: Secondary
+          - generic [ref=e158]: Destructive
+          - generic [ref=e159]: Outline
+        - generic [ref=e160]:
+          - generic [ref=e161]: draft
+          - generic [ref=e162]: published
+          - generic [ref=e163]: closed
+          - generic [ref=e164]: archived
+      - heading "StatusBadge" [level=3] [ref=e165]
+      - generic [ref=e168]:
+        - generic [ref=e169]: draft
+        - generic [ref=e170]: published
+        - generic [ref=e171]: closed
+        - generic [ref=e172]: archived
+        - generic [ref=e173]: pending
+        - generic [ref=e174]: reviewed
+        - generic [ref=e175]: shortlisted
+        - generic [ref=e176]: interviewed
+        - generic [ref=e177]: offered
+        - generic [ref=e178]: hired
+        - generic [ref=e179]: rejected
+        - generic [ref=e180]: withdrawn
+      - heading "Empty State" [level=3] [ref=e181]
+      - generic [ref=e184]:
+        - heading "No applications yet" [level=3] [ref=e186]
+        - paragraph [ref=e187]: When candidates start applying, their applications will appear here.
+        - button "Post a Job" [ref=e189]:
+          - img
+          - text: Post a Job
+      - heading "Skeleton" [level=3] [ref=e190]
+      - heading "Loading Spinner" [level=3] [ref=e201]
+      - generic [ref=e203]:
+        - generic [ref=e204]:
+          - status "Loading" [ref=e205]
+          - generic [ref=e206]: sm
+        - generic [ref=e207]:
+          - status "Loading" [ref=e208]
+          - generic [ref=e209]: md
+        - generic [ref=e210]:
+          - status "Loading" [ref=e211]
+          - generic [ref=e212]: lg
+    - generic [ref=e214]:
+      - heading "Data Display" [level=2] [ref=e215]
+      - heading "Cards" [level=3] [ref=e216]
+      - generic [ref=e217]:
+        - generic [ref=e218]:
+          - generic [ref=e219]:
+            - generic [ref=e220]: Job Posting
+            - generic [ref=e221]: Senior Software Engineer
+          - paragraph [ref=e223]: Full-time position in Lagos. 3+ years of React experience required.
+          - generic [ref=e224]:
+            - generic [ref=e225]: Published
+            - button "View" [ref=e226]
+        - generic [ref=e227]:
+          - generic [ref=e228]:
+            - generic [ref=e229]: Applicant
+            - generic [ref=e230]: Chioma Okafor
+          - paragraph [ref=e232]: Applied for Frontend Developer role on June 12, 2026.
+          - generic [ref=e233]:
+            - generic [ref=e234]: shortlisted
+            - button "Review" [ref=e235]
+        - generic [ref=e236]:
+          - generic [ref=e237]:
+            - generic [ref=e238]: Report
+            - generic [ref=e239]: Q2 2026 Hiring Summary
+          - paragraph [ref=e241]: 24 applications received, 6 interviews conducted, 2 offers accepted.
+          - button "Download" [ref=e243]
+      - heading "Stats Cards" [level=3] [ref=e244]
+      - generic [ref=e245]:
+        - generic [ref=e247]:
+          - paragraph [ref=e249]: Total Jobs
+          - generic [ref=e250]:
+            - paragraph [ref=e251]: "24"
+            - generic [ref=e252]: +12%
+          - paragraph [ref=e253]: Across all departments
+        - generic [ref=e255]:
+          - paragraph [ref=e257]: Active Applications
+          - generic [ref=e258]:
+            - paragraph [ref=e259]: "143"
+            - generic [ref=e260]: +8%
+          - paragraph [ref=e261]: Pending review
+        - generic [ref=e263]:
+          - paragraph [ref=e265]: Interviews
+          - generic [ref=e266]:
+            - paragraph [ref=e267]: "18"
+            - generic [ref=e268]: +5%
+          - paragraph [ref=e269]: Scheduled this month
+        - generic [ref=e271]:
+          - paragraph [ref=e273]: Hired
+          - generic [ref=e274]:
+            - paragraph [ref=e275]: "7"
+            - generic [ref=e276]: "-2%"
+          - paragraph [ref=e277]: New employees Q2
+      - heading "DataTable" [level=3] [ref=e278]
+      - table [ref=e283]:
+        - rowgroup [ref=e284]:
+          - row "Name Email Status Role" [ref=e285]:
+            - columnheader "Name" [ref=e286]
+            - columnheader "Email" [ref=e287]
+            - columnheader "Status" [ref=e288]
+            - columnheader "Role" [ref=e289]
+        - rowgroup [ref=e290]:
+          - row "Chioma Okafor chioma@lagosfood.ng Active Admin" [ref=e291]:
+            - cell "Chioma Okafor" [ref=e292]
+            - cell "chioma@lagosfood.ng" [ref=e293]
+            - cell "Active" [ref=e294]
+            - cell "Admin" [ref=e295]
+          - row "Emeka Nwosu emeka@lagosfood.ng Active HR" [ref=e296]:
+            - cell "Emeka Nwosu" [ref=e297]
+            - cell "emeka@lagosfood.ng" [ref=e298]
+            - cell "Active" [ref=e299]
+            - cell "HR" [ref=e300]
+          - row "Folake Adeyemi folake@lagosfood.ng On Leave Manager" [ref=e301]:
+            - cell "Folake Adeyemi" [ref=e302]
+            - cell "folake@lagosfood.ng" [ref=e303]
+            - cell "On Leave" [ref=e304]
+            - cell "Manager" [ref=e305]
+          - row "Tunde Bakare tunde@lagosfood.ng Active Staff" [ref=e306]:
+            - cell "Tunde Bakare" [ref=e307]
+            - cell "tunde@lagosfood.ng" [ref=e308]
+            - cell "Active" [ref=e309]
+            - cell "Staff" [ref=e310]
+          - row "Ngozi Eze ngozi@lagosfood.ng Inactive Staff" [ref=e311]:
+            - cell "Ngozi Eze" [ref=e312]
+            - cell "ngozi@lagosfood.ng" [ref=e313]
+            - cell "Inactive" [ref=e314]
+            - cell "Staff" [ref=e315]
+      - heading "Description List" [level=3] [ref=e316]
+      - generic [ref=e318]:
+        - heading "Employee Details" [level=4] [ref=e319]
+        - generic [ref=e320]:
+          - generic [ref=e321]:
+            - term [ref=e322]: Full Name
+            - definition [ref=e323]: Chioma Okafor
+          - generic [ref=e324]:
+            - term [ref=e325]: Email
+            - definition [ref=e326]: chioma@lagosfood.ng
+          - generic [ref=e327]:
+            - term [ref=e328]: Department
+            - definition [ref=e329]: Human Resources
+          - generic [ref=e330]:
+            - term [ref=e331]: Employee ID
+            - definition [ref=e332]: MLF-2024-0042
+          - generic [ref=e333]:
+            - term [ref=e334]: Start Date
+            - definition [ref=e335]: March 15, 2022
+    - generic [ref=e337]:
+      - heading "Overlays" [level=2] [ref=e338]
+      - heading "Dialog" [level=3] [ref=e339]
+      - button "Open Dialog" [ref=e342]
+      - heading "Drawer" [level=3] [ref=e343]
+      - button "Open Drawer" [ref=e346]
+      - heading "DropdownMenu" [level=3] [ref=e347]
+      - generic [ref=e349]:
+        - button
+        - button "Actions" [ref=e350]:
+          - img
+          - text: Actions
+      - heading "Popover" [level=3] [ref=e351]
+      - generic [ref=e353]:
+        - button
+        - button "Notifications" [ref=e354]:
+          - img
+          - text: Notifications
+    - contentinfo [ref=e355]:
+      - generic [ref=e356]:
+        - paragraph [ref=e357]: © 2026 My Lagos Food App. All rights reserved.
+        - generic [ref=e358]:
+          - generic [ref=e359] [cursor=pointer]: Privacy
+          - generic [ref=e360] [cursor=pointer]: Terms
+    - region "Notifications alt+T"
+  - region "Notifications alt+T"
+  - button "Open Next.js Dev Tools" [ref=e366] [cursor=pointer]:
+    - img [ref=e367]
