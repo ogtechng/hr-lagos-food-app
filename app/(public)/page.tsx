@@ -35,7 +35,7 @@ const tabs = ["Operations", "Kitchen teams", "Logistics"];
 
 const entityLogos = [
   { name: "BulkFood", src: "/bulkfood.png", width: 594, height: 296 },
-  { name: "Produce for Lagos App", src: "/mylagosfoodapp-logo.svg", width: 816, height: 264 },
+  { name: "Produce for Lagos App", src: "/logo.png", width: 1280, height: 911 },
   { name: "P4L", src: "/p4lagos.png", width: 199, height: 87 },
 ];
 
@@ -238,7 +238,9 @@ export default async function PublicHomePage() {
                   alt={logo.name}
                   width={logo.width}
                   height={logo.height}
-                  className="h-12 w-auto object-contain"
+                  className={`w-auto object-contain ${
+                    logo.name === "Produce for Lagos App" ? "h-20" : "h-12"
+                  }`}
                 />
               </div>
             ))}
