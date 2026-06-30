@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 
 function getExcerpt(description: string | null) {
   if (!description) {
-    return "Open role across the My Lagos Food hiring network.";
+    return "Open role across the Produce for Lagos hiring network.";
   }
 
-  return description.length > 150 ? `${description.slice(0, 147)}...` : description;
+  const text = description.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+
+  return text.length > 150 ? `${text.slice(0, 147)}...` : text;
 }
 
 interface JobCardProps {

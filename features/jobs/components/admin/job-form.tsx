@@ -1,17 +1,21 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
 import { toast } from "sonner";
 
 import type { Entity, Job, JobStatus } from "@/app/api/_db/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { JOB_STATUS_OPTIONS } from "@/features/jobs/data/job-options";
+import type { AdminDepartment } from "@/features/departments/types/department.types";
+import { EMPLOYMENT_TYPE_OPTIONS, JOB_STATUS_OPTIONS } from "@/features/jobs/data/job-options";
+import NIGERIAN_STATES from "@/features/jobs/data/nigerian-states.json";
 import { useJobMutations } from "@/features/jobs/hooks/use_jobs_mutations";
+import { RichTextEditor } from "@/features/rich-text/components/rich-text-editor";
 
 interface JobFormProps {
   entities: Entity[];
+  departments: AdminDepartment[];
   job?: Job;
 }
 
@@ -24,21 +28,31 @@ function jobInput(formData: FormData) {
   return {
     entityId: value(formData, "entityId"),
     title: value(formData, "title"),
-    slug: value(formData, "slug"),
     department: value(formData, "department") || null,
     location: value(formData, "location"),
     employmentType: value(formData, "employmentType") || null,
     description: value(formData, "description") || null,
-    responsibilities: value(formData, "responsibilities") || null,
-    requirements: value(formData, "requirements") || null,
+    responsibilities: null,
+    requirements: null,
     status: (value(formData, "status") || "draft") as JobStatus,
   };
 }
 
-export function JobForm({ entities, job }: JobFormProps) {
+export function JobForm({ entities, departments, job }: JobFormProps) {
   const router = useRouter();
   const { create, update } = useJobMutations();
   const pending = create.isPending || update.isPending;
+  const [selectedEntityId, setSelectedEntityId] = useState(job?.entityId ?? "");
+  const entityDepartments = useMemo(
+    () =>
+      departments.filter(
+        (department) => !department.entityId || department.entityId === selectedEntityId,
+      ),
+    [departments, selectedEntityId],
+  );
+  const bodyDefaultValue = [job?.description, job?.responsibilities, job?.requirements]
+    .filter(Boolean)
+    .join("<hr><p></p>");
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -67,7 +81,8 @@ export function JobForm({ entities, job }: JobFormProps) {
             name="entityId"
             defaultValue={job?.entityId ?? ""}
             required
-            className="h-10 w-full rounded-xl border border-input bg-background px-3.5 text-sm"
+            className="admin-control h-10 w-full border border-input bg-background px-3.5 text-sm"
+            onChange={(event) => setSelectedEntityId(event.currentTarget.value)}
           >
             <option value="">Select entity</option>
             {entities.map((entity) => (
@@ -82,7 +97,7 @@ export function JobForm({ entities, job }: JobFormProps) {
           <select
             name="status"
             defaultValue={job?.status ?? "draft"}
-            className="h-10 w-full rounded-xl border border-input bg-background px-3.5 text-sm"
+            className="admin-control h-10 w-full border border-input bg-background px-3.5 text-sm"
           >
             {JOB_STATUS_OPTIONS.map((option) => (
               <option key={option.value} value={option.value}>
@@ -98,33 +113,63 @@ export function JobForm({ entities, job }: JobFormProps) {
           <Input name="title" defaultValue={job?.title ?? ""} required />
         </label>
         <label className="space-y-2">
-          <span className="text-sm font-semibold">Slug</span>
-          <Input name="slug" defaultValue={job?.slug ?? ""} required />
-        </label>
-        <label className="space-y-2">
           <span className="text-sm font-semibold">Department</span>
-          <Input name="department" defaultValue={job?.department ?? ""} />
+          <select
+            name="department"
+            defaultValue={job?.department ?? ""}
+            className="admin-control h-10 w-full border border-input bg-background px-3.5 text-sm"
+            disabled={!selectedEntityId}
+          >
+            <option value="">
+              {selectedEntityId ? "Select department" : "Select entity first"}
+            </option>
+            {entityDepartments.map((department) => (
+              <option key={department.id} value={department.name}>
+                {department.name}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="space-y-2">
           <span className="text-sm font-semibold">Location</span>
-          <Input name="location" defaultValue={job?.location ?? ""} required />
+          <select
+            name="location"
+            defaultValue={job?.location ?? ""}
+            required
+            className="admin-control h-10 w-full border border-input bg-background px-3.5 text-sm"
+          >
+            <option value="">Select location</option>
+            {NIGERIAN_STATES.map((state) => (
+              <option key={state} value={state}>
+                {state}
+              </option>
+            ))}
+          </select>
         </label>
         <label className="space-y-2">
           <span className="text-sm font-semibold">Employment type</span>
-          <Input name="employmentType" defaultValue={job?.employmentType ?? ""} />
+          <select
+            name="employmentType"
+            defaultValue={job?.employmentType ?? ""}
+            className="admin-control h-10 w-full border border-input bg-background px-3.5 text-sm"
+          >
+            <option value="">Select employment type</option>
+            {EMPLOYMENT_TYPE_OPTIONS.map((type) => (
+              <option key={type} value={type}>
+                {type}
+              </option>
+            ))}
+          </select>
         </label>
       </div>
       <label className="space-y-2 block">
-        <span className="text-sm font-semibold">Description</span>
-        <Textarea name="description" defaultValue={job?.description ?? ""} />
-      </label>
-      <label className="space-y-2 block">
-        <span className="text-sm font-semibold">Responsibilities</span>
-        <Textarea name="responsibilities" defaultValue={job?.responsibilities ?? ""} />
-      </label>
-      <label className="space-y-2 block">
-        <span className="text-sm font-semibold">Requirements</span>
-        <Textarea name="requirements" defaultValue={job?.requirements ?? ""} />
+        <span className="text-sm font-semibold">Job description</span>
+        <RichTextEditor
+          name="description"
+          defaultValue={bodyDefaultValue}
+          minHeightClassName="min-h-[30rem]"
+          placeholder="Describe the role, responsibilities, requirements, benefits, and hiring context..."
+        />
       </label>
       <Button type="submit" disabled={pending} size="lg">
         {pending ? "Saving..." : job ? "Update job" : "Create job"}

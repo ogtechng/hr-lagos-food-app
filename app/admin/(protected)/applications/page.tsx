@@ -1,7 +1,9 @@
 import { CheckCircle2, Clock3, FileText, XCircle } from "lucide-react";
 
 import { requireAdmin } from "@/app/api/_auth/require-admin";
-import { applicationFiltersSchema } from "@/app/api/_schemas/applications/application.schema";
+import {
+  adminApplicationListQuerySchema,
+} from "@/app/api/_schemas/applications/application.schema";
 import { AdminPageShell } from "@/components/shared/admin-page-shell";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatsCard } from "@/components/shared/stats-card";
@@ -25,13 +27,17 @@ function first(value: string | string[] | undefined) {
 export default async function AdminApplicationsPage({ searchParams }: AdminApplicationsPageProps) {
   await requireAdmin();
   const raw = (await searchParams) ?? {};
-  const filters = applicationFiltersSchema.parse({
+  const query = adminApplicationListQuerySchema.parse({
     search: first(raw.search) || undefined,
     jobId: first(raw.jobId) || undefined,
     entityId: first(raw.entityId) || undefined,
     status: first(raw.status) || undefined,
     createdFrom: first(raw.createdFrom) || undefined,
     createdTo: first(raw.createdTo) || undefined,
+    page: first(raw.page),
+    pageSize: first(raw.pageSize),
+    sortBy: first(raw.sortBy),
+    sortDir: first(raw.sortDir),
   });
 
   const api = await createServerApiClient();
@@ -39,7 +45,7 @@ export default async function AdminApplicationsPage({ searchParams }: AdminAppli
   const jobsService = make_jobs_service(api);
   const entitiesService = make_entities_service(api);
   const [applications, jobs, entities] = await Promise.all([
-    applicationsService.get_all(filters),
+    applicationsService.get_paginated(query),
     jobsService.get_all(),
     entitiesService.get_all(),
   ]);
@@ -62,7 +68,7 @@ export default async function AdminApplicationsPage({ searchParams }: AdminAppli
         titleAccent="review"
         description="Review applicants, inspect CVs, and keep hiring decisions moving."
       />
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           title="Total"
           value={allApplications.length}
@@ -100,7 +106,7 @@ export default async function AdminApplicationsPage({ searchParams }: AdminAppli
           createdTo: first(raw.createdTo),
         }}
       />
-      <ApplicationsTable applications={applications} />
+      <ApplicationsTable result={applications} />
     </AdminPageShell>
   );
 }

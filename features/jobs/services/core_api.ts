@@ -1,7 +1,8 @@
 import type { AxiosInstance } from "axios";
 
 import type { Job } from "@/app/api/_db/schema";
-import type { JobFilters } from "@/app/api/_schemas/jobs/job.schema";
+import type { AdminJobListQuery, JobFilters } from "@/app/api/_schemas/jobs/job.schema";
+import type { PaginatedResult } from "@/app/api/_schemas/shared/list-query.schema";
 import type { PublicJob } from "@/features/jobs/types/job-display.types";
 
 type ApiEnvelope<T> = { data: T };
@@ -10,7 +11,7 @@ export type AdminJob = Job & {
   entitySlug: string;
 };
 
-function toParams(filters?: JobFilters) {
+function toParams(filters?: Record<string, unknown>) {
   const params = new URLSearchParams();
 
   for (const [key, value] of Object.entries(filters ?? {})) {
@@ -25,6 +26,12 @@ const core_api = (api: AxiosInstance) => ({
     (
       await api.get<ApiEnvelope<AdminJob[]>>("/jobs", {
         params: Object.fromEntries(toParams(filters)),
+      })
+    ).data.data,
+  get_paginated: async (query: AdminJobListQuery) =>
+    (
+      await api.get<ApiEnvelope<PaginatedResult<AdminJob>>>("/jobs", {
+        params: Object.fromEntries(toParams(query)),
       })
     ).data.data,
   get_published: async (filters?: Omit<JobFilters, "status">) =>

@@ -6,6 +6,7 @@ import { AdminPageShell } from "@/components/shared/admin-page-shell";
 import { PageHeader } from "@/components/shared/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { JobForm } from "@/features/jobs/components/admin/job-form";
+import { make_departments_service } from "@/features/departments/services";
 import { make_entities_service } from "@/features/entities/services";
 import { make_jobs_service } from "@/features/jobs/services";
 import { createServerApiClient } from "@/lib/server-api-client";
@@ -20,9 +21,11 @@ export default async function EditJobPage({ params }: EditJobPageProps) {
   const api = await createServerApiClient();
   const jobsService = make_jobs_service(api);
   const entitiesService = make_entities_service(api);
-  const [job, entities] = await Promise.all([
+  const departmentsService = make_departments_service(api);
+  const [job, entities, departments] = await Promise.all([
     jobsService.get_by_id(id).catch(() => null),
     entitiesService.get_all(),
+    departmentsService.get_active(),
   ]);
 
   if (!job) notFound();
@@ -31,7 +34,7 @@ export default async function EditJobPage({ params }: EditJobPageProps) {
     <AdminPageShell>
       <PageHeader backHref="/admin/jobs" title="Edit" titleAccent="job" description={job.title} />
       <div className="grid gap-5 xl:grid-cols-[18rem_1fr] xl:items-start">
-        <aside className="rounded-3xl border border-[#ddd8cc] bg-[#f4f1e8] p-5">
+        <aside className="dashboard-soft-ring rounded-lg border border-[var(--admin-border)] bg-[var(--admin-panel)] p-4">
           <p className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Current state
           </p>
@@ -41,9 +44,9 @@ export default async function EditJobPage({ params }: EditJobPageProps) {
             applications.
           </p>
         </aside>
-        <Card className="border-[#ddd8cc] bg-[#fbfaf6]">
-          <CardContent>
-            <JobForm job={job} entities={entities} />
+        <Card className="dashboard-soft-ring border-[var(--admin-border)] bg-[var(--admin-panel)]">
+          <CardContent className="p-4">
+            <JobForm job={job} entities={entities} departments={departments} />
           </CardContent>
         </Card>
       </div>

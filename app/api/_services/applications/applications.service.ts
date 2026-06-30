@@ -5,6 +5,7 @@ import {
   getApplicationById,
   listApplicationStatusEvents,
   listApplications,
+  listApplicationsPaginated,
   updateApplicationAdminNote,
   updateApplicationStatus,
 } from "@/app/api/_repositories/applications/applications.repository";
@@ -18,6 +19,7 @@ import {
 } from "@/app/api/_services/emails/application-emails.service";
 import { uploadCoverLetterFile, uploadCvFile } from "@/app/api/_services/upload/cv-upload.service";
 import type {
+  AdminApplicationListQuery,
   ApplicationFilters,
   CreateApplicationInput,
   PublicApplicationFormInput,
@@ -100,6 +102,10 @@ export async function listApplicationStatusEventsService(applicationId: string) 
 
 export async function listApplicationsService(filters: ApplicationFilters = {}) {
   return listApplications(filters);
+}
+
+export async function listApplicationsPaginatedService(query: AdminApplicationListQuery) {
+  return listApplicationsPaginated(query);
 }
 
 export async function updateApplicationStatusService(

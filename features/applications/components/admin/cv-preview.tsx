@@ -1,5 +1,6 @@
 "use client";
 
+import type React from "react";
 import { useEffect, useState } from "react";
 import { ExternalLink, FileText, Loader2 } from "lucide-react";
 
@@ -10,6 +11,7 @@ interface CvPreviewProps {
   fileName: string | null;
   hasStoragePath: boolean;
   applicantName: string;
+  actions?: React.ReactNode;
 }
 
 type PreviewState =
@@ -24,7 +26,13 @@ function extensionOf(fileName: string | null) {
   return (fileName?.split(".").pop() ?? "").toLowerCase();
 }
 
-export function CvPreview({ applicationId, fileName, hasStoragePath, applicantName }: CvPreviewProps) {
+export function CvPreview({
+  applicationId,
+  fileName,
+  hasStoragePath,
+  applicantName,
+  actions,
+}: CvPreviewProps) {
   const openHref = `/api/admin/applications/${applicationId}/cv`;
   const [state, setState] = useState<PreviewState>(
     hasStoragePath ? { kind: "loading" } : { kind: "none" },
@@ -57,24 +65,29 @@ export function CvPreview({ applicationId, fileName, hasStoragePath, applicantNa
   }, [openHref, fileName, hasStoragePath]);
 
   return (
-    <section className="overflow-hidden rounded-2xl border border-black/6 bg-white shadow-sm xl:sticky xl:top-6">
-      <div className="flex items-center justify-between gap-3 border-b border-[#f0ede4] px-5 py-3.5">
+    <section className="dashboard-soft-ring overflow-hidden rounded-lg border border-[var(--admin-border)] bg-[var(--admin-panel)] xl:sticky xl:top-6">
+      <div className="flex items-center justify-between gap-3 border-b border-[var(--admin-border)] px-4 py-3">
         <div className="min-w-0">
-          <h2 className="font-display text-base tracking-tight text-[#1a1916]">CV preview</h2>
-          <p className="truncate text-xs text-[#8a877d]">{fileName ?? "Applicant CV"}</p>
+          <h2 className="font-display text-base tracking-tight text-[var(--admin-text)]">
+            CV preview
+          </h2>
+          <p className="truncate text-xs text-[var(--admin-muted)]">{fileName ?? "Applicant CV"}</p>
         </div>
-        <Button
-          nativeButton={false}
-          variant="outline"
-          size="sm"
-          render={<a href={openHref} target="_blank" rel="noreferrer" />}
-        >
-          Open
-          <ExternalLink className="size-4" aria-hidden="true" />
-        </Button>
+        <div className="flex shrink-0 flex-wrap items-center justify-end gap-2">
+          {actions}
+          <Button
+            nativeButton={false}
+            variant="outline"
+            size="sm"
+            render={<a href={openHref} target="_blank" rel="noreferrer" />}
+          >
+            Open
+            <ExternalLink className="size-4" aria-hidden="true" />
+          </Button>
+        </div>
       </div>
 
-      <div className="h-[calc(100vh-11rem)] min-h-[640px] w-full bg-[#f4f3ed]">
+      <div className="h-[calc(100vh-11rem)] min-h-[640px] w-full bg-neutral-100">
         {state.kind === "ready" && (
           <iframe
             src={state.src}
@@ -85,7 +98,7 @@ export function CvPreview({ applicationId, fileName, hasStoragePath, applicantNa
         )}
 
         {state.kind === "loading" && (
-          <div className="flex size-full flex-col items-center justify-center gap-3 text-[#8a877d]">
+          <div className="flex size-full flex-col items-center justify-center gap-3 text-[var(--admin-muted)]">
             <Loader2 className="size-5 animate-spin" aria-hidden="true" />
             <p className="text-sm">Loading preview…</p>
           </div>
@@ -93,13 +106,13 @@ export function CvPreview({ applicationId, fileName, hasStoragePath, applicantNa
 
         {(state.kind === "none" || state.kind === "error") && (
           <div className="flex size-full flex-col items-center justify-center gap-3 px-6 text-center">
-            <span className="flex size-12 items-center justify-center rounded-full bg-white text-[#8a877d] shadow-sm">
+            <span className="flex size-12 items-center justify-center rounded-md bg-white text-[var(--admin-muted)] shadow-sm">
               <FileText className="size-5" aria-hidden="true" />
             </span>
-            <p className="text-sm font-medium text-[#3f3c35]">
+            <p className="text-sm font-medium text-[var(--admin-text)]">
               {state.kind === "error" ? "Preview unavailable" : "No inline preview available"}
             </p>
-            <p className="max-w-sm text-xs leading-5 text-[#8a877d]">
+            <p className="max-w-sm text-xs leading-5 text-[var(--admin-muted)]">
               {state.kind === "error"
                 ? "This file could not be loaded for preview. Use Open to download it."
                 : "This record has no storage path, so the CV can’t be embedded. Use Open, or backfill the storage path for older uploads."}

@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { listQuerySchema } from "@/app/api/_schemas/shared/list-query.schema";
+
 export const applicationStatusSchema = z.enum(["submitted", "accepted", "rejected"]);
 
 export const applicationIdParamSchema = z.object({
@@ -46,7 +48,14 @@ export const applicationFiltersSchema = z.object({
   createdTo: z.coerce.date().optional(),
 });
 
+export const adminApplicationListQuerySchema = applicationFiltersSchema.merge(
+  listQuerySchema.extend({
+    sortBy: z.enum(["name", "job", "entity", "status", "createdAt"]).catch("createdAt"),
+  }),
+);
+
 export type CreateApplicationInput = z.infer<typeof createApplicationSchema>;
 export type PublicApplicationFormInput = z.infer<typeof publicApplicationFormSchema>;
 export type UpdateApplicationStatusInput = z.infer<typeof updateApplicationStatusSchema>;
 export type ApplicationFilters = z.infer<typeof applicationFiltersSchema>;
+export type AdminApplicationListQuery = z.infer<typeof adminApplicationListQuerySchema>;

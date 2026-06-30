@@ -1,6 +1,7 @@
 import type { AxiosInstance } from "axios";
 
-import type { ReportFilters } from "@/app/api/_schemas/reports/report.schema";
+import type { ReportFilters, ReportListQuery } from "@/app/api/_schemas/reports/report.schema";
+import type { PaginatedResult } from "@/app/api/_schemas/shared/list-query.schema";
 
 type ApiEnvelope<T> = { data: T };
 
@@ -28,6 +29,12 @@ const core_api = (api: AxiosInstance) => ({
     (
       await api.get<ApiEnvelope<ApplicationsReportRow[]>>("/reports/applications", {
         params: filters,
+      })
+    ).data.data,
+  get_applications_paginated: async (query: ReportListQuery) =>
+    (
+      await api.get<ApiEnvelope<PaginatedResult<ApplicationsReportRow>>>("/reports/applications", {
+        params: query,
       })
     ).data.data,
   get_applications_summary: async (filters?: ReportFilters) =>

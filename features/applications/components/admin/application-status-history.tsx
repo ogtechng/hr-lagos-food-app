@@ -21,7 +21,10 @@ export function ApplicationStatusHistory({ events }: ApplicationStatusHistoryPro
   return (
     <div className="space-y-3">
       {events.map((event) => (
-        <div key={event.id} className="rounded-xl border p-3">
+        <div
+          key={event.id}
+          className="rounded-lg border border-[var(--admin-border)] bg-[var(--admin-panel-muted)] p-3"
+        >
           <div className="flex items-center justify-between gap-3">
             <StatusBadge status={event.newStatus} />
             <span className="text-xs text-muted-foreground">{formatDate(event.createdAt)}</span>

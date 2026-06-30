@@ -1,8 +1,8 @@
 import Link from "next/link";
-import { BriefcaseBusiness, CheckCircle2, CircleDashed, LockKeyhole } from "lucide-react";
+import { BriefcaseBusiness, CheckCircle2, CircleDashed, LockKeyhole, Plus } from "lucide-react";
 
 import { requireAdmin } from "@/app/api/_auth/require-admin";
-import { jobFiltersSchema } from "@/app/api/_schemas/jobs/job.schema";
+import { adminJobListQuerySchema, jobFiltersSchema } from "@/app/api/_schemas/jobs/job.schema";
 import { AdminPageShell } from "@/components/shared/admin-page-shell";
 import { PageHeader } from "@/components/shared/page-header";
 import { StatsCard } from "@/components/shared/stats-card";
@@ -25,13 +25,18 @@ function first(value: string | string[] | undefined) {
 export default async function AdminJobsPage({ searchParams }: AdminJobsPageProps) {
   await requireAdmin();
   const raw = (await searchParams) ?? {};
-  const filters = jobFiltersSchema.parse({
+  const query = adminJobListQuerySchema.parse({
     search: first(raw.search),
     status: first(raw.status) || undefined,
+    page: first(raw.page),
+    pageSize: first(raw.pageSize),
+    sortBy: first(raw.sortBy),
+    sortDir: first(raw.sortDir),
   });
   const api = await createServerApiClient();
-  const jobs = await make_jobs_service(api).get_all(filters);
-  const allJobs = await make_jobs_service(api).get_all();
+  const jobsService = make_jobs_service(api);
+  const jobs = await jobsService.get_paginated(query);
+  const allJobs = await jobsService.get_all(jobFiltersSchema.parse({}));
   const published = allJobs.filter((job) => job.status === "published").length;
   const draft = allJobs.filter((job) => job.status === "draft").length;
   const closed = allJobs.filter((job) => job.status === "closed").length;
@@ -44,12 +49,17 @@ export default async function AdminJobsPage({ searchParams }: AdminJobsPageProps
         titleAccent="operations"
         description="Create, edit, publish, and close jobs."
       >
-        <Button nativeButton={false} render={<Link href="/admin/jobs/new" />}>
+        <Button
+          nativeButton={false}
+          className="bg-[var(--admin-lemon)] text-[var(--admin-primary)] hover:bg-[var(--admin-lemon)]/80"
+          render={<Link href="/admin/jobs/new" />}
+        >
+          <Plus className="size-4" aria-hidden="true" />
           New job
         </Button>
       </PageHeader>
 
-      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-4">
         <StatsCard
           title="Total jobs"
           value={allJobs.length}
@@ -76,7 +86,7 @@ export default async function AdminJobsPage({ searchParams }: AdminJobsPageProps
         />
       </div>
 
-      <form className="grid gap-3 rounded-3xl border border-[#ddd8cc] bg-[#fbfaf6] p-4 md:grid-cols-[1fr_14rem_auto] md:items-end">
+      <form className="admin-filter-panel grid gap-3 rounded-lg p-3 md:grid-cols-[1fr_14rem_auto] md:items-end">
         <label className="grid gap-2">
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
             Search
@@ -90,7 +100,7 @@ export default async function AdminJobsPage({ searchParams }: AdminJobsPageProps
           <select
             name="status"
             defaultValue={first(raw.status) ?? ""}
-            className="h-8 rounded-lg border border-input bg-background px-2.5 text-sm"
+            className="admin-control h-9 border border-input bg-background px-2.5 text-sm"
           >
             <option value="">All statuses</option>
             <option value="draft">Draft</option>
@@ -100,7 +110,7 @@ export default async function AdminJobsPage({ searchParams }: AdminJobsPageProps
         </label>
         <Button type="submit">Filter</Button>
       </form>
-      <JobsTable jobs={jobs} />
+      <JobsTable result={jobs} />
     </AdminPageShell>
   );
 }

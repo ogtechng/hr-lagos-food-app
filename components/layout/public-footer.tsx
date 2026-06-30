@@ -20,11 +20,11 @@ export function PublicFooter() {
             <Link
               href="/"
               className="flex items-center gap-3"
-              aria-label="My Lagos Food Careers — home"
+              aria-label="Produce for Lagos Careers — home"
             >
               <Image
                 src="/logo.svg"
-                alt="My Lagos Food App"
+                alt="Produce for Lagos App"
                 width={816}
                 height={264}
                 className="h-9 w-auto"
@@ -86,7 +86,7 @@ export function PublicFooter() {
         {/* Bottom bar */}
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/60 pt-6 sm:flex-row">
           <p className="text-xs text-muted-foreground">
-            &copy; {new Date().getFullYear()} My Lagos Food App. All rights reserved.
+            &copy; {new Date().getFullYear()} Produce for Lagos App. All rights reserved.
           </p>
         </div>
       </Container>

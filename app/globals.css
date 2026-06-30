@@ -138,6 +138,177 @@
 }
 
 @layer components {
+  .admin-scope {
+    --admin-canvas: #fafafa;
+    --admin-panel: #ffffff;
+    --admin-panel-muted: #f5f5f5;
+    --admin-border: #e5e5e5;
+    --admin-border-strong: #d4d4d4;
+    --admin-text: #171717;
+    --admin-muted: #737373;
+    --admin-primary: #064e3b;
+    --admin-primary-strong: #022c22;
+    --admin-primary-soft: #f5f5f5;
+    --admin-lemon: #d9f99d;
+    --admin-lemon-soft: #f7fee7;
+    --admin-chart-blue: #2563eb;
+    --admin-chart-green: #10b981;
+    --admin-chart-red: #f43f5e;
+    --admin-chart-lemon: #bef264;
+  }
+
+  .admin-scope [data-slot="input"],
+  .admin-scope [data-slot="textarea"],
+  .admin-scope [data-slot="select-trigger"],
+  .admin-scope .admin-control {
+    border-radius: 0.25rem;
+    background: var(--admin-panel);
+  }
+
+  .admin-scope [data-slot="button"] {
+    border-radius: 0.375rem;
+  }
+
+  .admin-scope [data-slot="input"],
+  .admin-scope [data-slot="textarea"],
+  .admin-scope [data-slot="select-trigger"],
+  .admin-scope .admin-control,
+  .admin-scope select {
+    min-height: 2.25rem;
+    border-color: var(--admin-border);
+    color: var(--admin-text);
+  }
+
+  .admin-scope [data-slot="input"]:focus-visible,
+  .admin-scope [data-slot="textarea"]:focus-visible,
+  .admin-scope [data-slot="select-trigger"]:focus-visible,
+  .admin-scope .admin-control:focus-visible,
+  .admin-scope select:focus-visible {
+    border-color: var(--admin-border-strong);
+    box-shadow: 0 0 0 3px rgb(23 23 23 / 0.08);
+  }
+
+  .admin-scope .admin-rich-editor {
+    border-radius: 0 0 0.25rem 0.25rem;
+  }
+
+  .admin-rich-editor h1,
+  .rich-text-content h1 {
+    margin-block: 1rem 0.5rem;
+    font-size: 1.75rem;
+    line-height: 1.15;
+    font-weight: 700;
+    color: var(--admin-text, var(--foreground));
+  }
+
+  .admin-rich-editor h2,
+  .rich-text-content h2 {
+    margin-block: 0.9rem 0.45rem;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    font-weight: 700;
+    color: var(--admin-text, var(--foreground));
+  }
+
+  .admin-rich-editor h3,
+  .rich-text-content h3 {
+    margin-block: 0.75rem 0.35rem;
+    font-size: 1.1rem;
+    line-height: 1.25;
+    font-weight: 700;
+    color: var(--admin-text, var(--foreground));
+  }
+
+  .admin-rich-editor p,
+  .rich-text-content p {
+    margin-block: 0.45rem;
+  }
+
+  .admin-rich-editor ul,
+  .rich-text-content ul {
+    margin-block: 0.65rem;
+    padding-left: 1.35rem;
+    list-style: disc;
+  }
+
+  .admin-rich-editor ol,
+  .rich-text-content ol {
+    margin-block: 0.65rem;
+    padding-left: 1.35rem;
+    list-style: decimal;
+  }
+
+  .admin-rich-editor li,
+  .rich-text-content li {
+    margin-block: 0.25rem;
+    padding-left: 0.15rem;
+  }
+
+  .admin-rich-editor blockquote,
+  .rich-text-content blockquote {
+    margin-block: 0.9rem;
+    border-left: 3px solid var(--admin-border-strong, var(--border));
+    padding-left: 0.9rem;
+    color: var(--admin-muted, var(--muted-foreground));
+    font-style: italic;
+  }
+
+  .admin-rich-editor img,
+  .rich-text-content img {
+    margin-block: 0.9rem;
+    max-width: 100%;
+    border-radius: 0.5rem;
+  }
+
+  .admin-scope .dashboard-surface,
+  .admin-scope [data-slot="card"] {
+    border: 1px solid var(--admin-border);
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.04),
+      0 10px 28px rgb(15 23 42 / 0.045),
+      inset 0 1px 0 rgb(255 255 255 / 0.9);
+  }
+
+  .admin-scope [data-slot="card"] {
+    border-radius: 0.5rem;
+    background: var(--admin-panel);
+  }
+
+  .admin-scope .dashboard-soft-ring {
+    outline: 1px solid rgb(23 23 23 / 0.04);
+    outline-offset: 3px;
+  }
+
+  .admin-scope .admin-filter-panel,
+  .admin-scope .admin-stat-strip,
+  .admin-scope .admin-table-shell {
+    border: 1px solid var(--admin-border);
+    background: var(--admin-panel);
+    box-shadow:
+      0 1px 2px rgb(15 23 42 / 0.04),
+      0 14px 34px rgb(15 23 42 / 0.05),
+      inset 0 1px 0 rgb(255 255 255 / 0.9);
+    outline: 1px solid rgb(23 23 23 / 0.035);
+    outline-offset: 3px;
+  }
+
+  .admin-scope [data-collapsible="icon"] [data-sidebar="menu-button"] {
+    width: 2.25rem !important;
+    height: 2.25rem !important;
+    padding: 0 !important;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .admin-scope [data-collapsible="icon"] [data-sidebar="menu-button"] span {
+    display: none;
+  }
+
+  .admin-scope [data-collapsible="icon"] [data-sidebar="menu-item"] {
+    display: flex;
+    justify-content: center;
+  }
+
   .hero-noise {
     background: #064b28;
   }

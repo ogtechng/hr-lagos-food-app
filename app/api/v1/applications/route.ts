@@ -3,11 +3,13 @@ import { z } from "zod";
 
 import { requireAdmin } from "@/app/api/_auth/require-admin";
 import {
+  adminApplicationListQuerySchema,
   applicationFiltersSchema,
   publicApplicationFormSchema,
 } from "@/app/api/_schemas/applications/application.schema";
 import {
   createApplicationForJob,
+  listApplicationsPaginatedService,
   listApplicationsService,
 } from "@/app/api/_services/applications/applications.service";
 import { created, handleApiError, ok, searchParamsToObject } from "@/app/api/_utils/http";
@@ -20,9 +22,14 @@ function formDataValue(formData: FormData, key: string) {
 export async function GET(request: NextRequest) {
   try {
     await requireAdmin();
-    const filters = applicationFiltersSchema.parse(
-      searchParamsToObject(request.nextUrl.searchParams),
-    );
+    const raw = searchParamsToObject(request.nextUrl.searchParams);
+
+    if (raw.page || raw.pageSize || raw.sortBy || raw.sortDir) {
+      const query = adminApplicationListQuerySchema.parse(raw);
+      return ok(await listApplicationsPaginatedService(query));
+    }
+
+    const filters = applicationFiltersSchema.parse(raw);
     return ok(await listApplicationsService(filters));
   } catch (error) {
     return handleApiError(error);

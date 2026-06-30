@@ -1,11 +1,16 @@
 import {
   getApplicationsReport,
+  getApplicationsReportPaginated,
   getApplicationsReportSummary,
 } from "@/app/api/_repositories/reports/reports.repository";
-import type { ReportFilters } from "@/app/api/_schemas/reports/report.schema";
+import type { ReportFilters, ReportListQuery } from "@/app/api/_schemas/reports/report.schema";
 
 export async function getApplicationsReportService(filters: ReportFilters = {}) {
   return getApplicationsReport(filters);
+}
+
+export async function getApplicationsReportPaginatedService(query: ReportListQuery) {
+  return getApplicationsReportPaginated(query);
 }
 
 export async function getApplicationsReportSummaryService(filters: ReportFilters = {}) {

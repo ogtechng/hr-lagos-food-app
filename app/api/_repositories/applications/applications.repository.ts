@@ -1,4 +1,4 @@
-import { and, desc, eq, gte, ilike, lte, or, type SQL } from "drizzle-orm";
+import { and, asc, count, desc, eq, gte, ilike, lte, or, type SQL } from "drizzle-orm";
 
 import { db } from "@/app/api/_db";
 import {
@@ -10,7 +10,14 @@ import {
   type NewApplication,
   type NewApplicationStatusEvent,
 } from "@/app/api/_db/schema";
-import type { ApplicationFilters } from "@/app/api/_schemas/applications/application.schema";
+import type {
+  AdminApplicationListQuery,
+  ApplicationFilters,
+} from "@/app/api/_schemas/applications/application.schema";
+import {
+  createPaginatedResult,
+  getOffset,
+} from "@/app/api/_schemas/shared/list-query.schema";
 
 function buildApplicationFilters(filters: ApplicationFilters = {}) {
   const conditions: SQL[] = [];
@@ -33,6 +40,16 @@ function buildApplicationFilters(filters: ApplicationFilters = {}) {
   }
 
   return conditions.length > 0 ? and(...conditions) : undefined;
+}
+
+function applicationOrderBy(query: AdminApplicationListQuery) {
+  const direction = query.sortDir === "asc" ? asc : desc;
+
+  if (query.sortBy === "name") return direction(applications.name);
+  if (query.sortBy === "job") return direction(jobs.title);
+  if (query.sortBy === "entity") return direction(entities.name);
+  if (query.sortBy === "status") return direction(applications.status);
+  return direction(applications.createdAt);
 }
 
 export async function createApplication(data: NewApplication) {
@@ -82,6 +99,48 @@ export async function listApplications(filters: ApplicationFilters = {}) {
   if (where) query.where(where);
 
   return query.orderBy(desc(applications.createdAt));
+}
+
+export async function listApplicationsPaginated(queryInput: AdminApplicationListQuery) {
+  const where = buildApplicationFilters(queryInput);
+  const [{ total }] = await db
+    .select({ total: count() })
+    .from(applications)
+    .innerJoin(jobs, eq(applications.jobId, jobs.id))
+    .innerJoin(entities, eq(jobs.entityId, entities.id))
+    .where(where);
+  const rows = await db
+    .select({
+      id: applications.id,
+      jobId: applications.jobId,
+      jobTitle: jobs.title,
+      entityId: jobs.entityId,
+      entityName: entities.name,
+      name: applications.name,
+      phone: applications.phone,
+      email: applications.email,
+      state: applications.state,
+      address: applications.address,
+      cvUrl: applications.cvUrl,
+      cvFileName: applications.cvFileName,
+      cvStoragePath: applications.cvStoragePath,
+      coverLetterUrl: applications.coverLetterUrl,
+      coverLetterFileName: applications.coverLetterFileName,
+      coverLetterStoragePath: applications.coverLetterStoragePath,
+      status: applications.status,
+      adminNote: applications.adminNote,
+      createdAt: applications.createdAt,
+      updatedAt: applications.updatedAt,
+    })
+    .from(applications)
+    .innerJoin(jobs, eq(applications.jobId, jobs.id))
+    .innerJoin(entities, eq(jobs.entityId, entities.id))
+    .where(where)
+    .orderBy(applicationOrderBy(queryInput))
+    .limit(queryInput.pageSize)
+    .offset(getOffset(queryInput));
+
+  return createPaginatedResult(rows, total, queryInput);
 }
 
 export async function updateApplicationStatus(id: string, status: ApplicationStatus) {

@@ -14,7 +14,7 @@ interface ApplicationFiltersProps {
 
 export function ApplicationFilters({ jobs, entities, searchParams }: ApplicationFiltersProps) {
   return (
-    <form className="grid gap-3 rounded-3xl border border-[#ddd8cc] bg-[#fbfaf6] p-4 md:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_0.9fr_auto] xl:items-end">
+    <form className="admin-filter-panel grid gap-3 rounded-lg p-3 md:grid-cols-2 xl:grid-cols-[1.4fr_1fr_1fr_0.9fr_0.9fr_0.9fr_auto] xl:items-end">
       <label className="grid gap-2">
         <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
           Search
@@ -32,7 +32,7 @@ export function ApplicationFilters({ jobs, entities, searchParams }: Application
         <select
           name="jobId"
           defaultValue={searchParams.jobId ?? ""}
-          className="h-8 rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All jobs</option>
           {jobs.map((job) => (
@@ -49,7 +49,7 @@ export function ApplicationFilters({ jobs, entities, searchParams }: Application
         <select
           name="entityId"
           defaultValue={searchParams.entityId ?? ""}
-          className="h-8 rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All entities</option>
           {entities.map((entity) => (
@@ -66,7 +66,7 @@ export function ApplicationFilters({ jobs, entities, searchParams }: Application
         <select
           name="status"
           defaultValue={searchParams.status ?? ""}
-          className="h-8 rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All statuses</option>
           <option value="submitted">Submitted</option>

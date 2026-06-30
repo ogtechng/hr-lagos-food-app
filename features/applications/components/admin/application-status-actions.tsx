@@ -13,7 +13,6 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -67,52 +66,51 @@ export function ApplicationStatusActions({ applicationId }: ApplicationStatusAct
   }
 
   return (
-    <div className="grid gap-3 md:grid-cols-2">
+    <div className="flex flex-wrap items-center gap-2">
       {(["accepted", "rejected"] as const).map((status) => {
         const copy = COPY[status];
         const destructive = status === "rejected";
 
         return (
-          <div key={status} className="space-y-3 rounded-2xl border p-4">
-            <Textarea
-              value={notes[status]}
-              onChange={(event) => setNotes((prev) => ({ ...prev, [status]: event.target.value }))}
-              placeholder={`Optional ${status} note`}
-            />
-
-            <AlertDialog
-              open={open === status}
-              onOpenChange={(next: boolean) => setOpen(next ? status : null)}
+          <AlertDialog
+            key={status}
+            open={open === status}
+            onOpenChange={(next: boolean) => setOpen(next ? status : null)}
+          >
+            <Button
+              type="button"
+              variant={destructive ? "destructive" : "default"}
+              disabled={updateStatus.isPending}
+              onClick={() => setOpen(status)}
             >
-              <AlertDialogTrigger
-                render={
-                  <Button
-                    variant={destructive ? "destructive" : "default"}
-                    disabled={updateStatus.isPending}
-                  />
-                }
-              >
-                {copy.trigger}
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle>{copy.title}</AlertDialogTitle>
-                  <AlertDialogDescription>{copy.description}</AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                  <AlertDialogAction
-                    variant={destructive ? "destructive" : "default"}
-                    onClick={() => runUpdate(status)}
-                  >
-                    {copy.confirm}
-                  </AlertDialogAction>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-
-            <p className="text-xs text-muted-foreground">Confirm before submitting this action.</p>
-          </div>
+              {copy.trigger}
+            </Button>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>{copy.title}</AlertDialogTitle>
+                <AlertDialogDescription>{copy.description}</AlertDialogDescription>
+              </AlertDialogHeader>
+              <label className="grid gap-2">
+                <span className="text-sm font-semibold">Reason or note</span>
+                <Textarea
+                  value={notes[status]}
+                  onChange={(event) =>
+                    setNotes((prev) => ({ ...prev, [status]: event.target.value }))
+                  }
+                  placeholder={`Add ${status} reason`}
+                />
+              </label>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  variant={destructive ? "destructive" : "default"}
+                  onClick={() => runUpdate(status)}
+                >
+                  {copy.confirm}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         );
       })}
     </div>

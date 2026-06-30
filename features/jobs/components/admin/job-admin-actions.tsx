@@ -1,10 +1,21 @@
 "use client";
 
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { CheckCircle2, LockKeyhole, MoreHorizontal, Pencil } from "lucide-react";
 import { toast } from "sonner";
 
 import type { JobStatus } from "@/app/api/_db/schema";
 import { Button } from "@/components/ui/button";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { useJobMutations } from "@/features/jobs/hooks/use_jobs_mutations";
 
 interface JobAdminActionsProps {
@@ -23,29 +34,48 @@ export function JobAdminActions({ id, status }: JobAdminActionsProps) {
   };
 
   return (
-    <div className="flex gap-2">
-      {status !== "published" && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          disabled={publish.isPending}
-          onClick={() => publish.mutate(id, { onSuccess: onSuccess("Job published"), onError })}
-        >
-          Publish
-        </Button>
-      )}
-      {status !== "closed" && (
-        <Button
-          type="button"
-          variant="outline"
-          size="sm"
-          disabled={close.isPending}
-          onClick={() => close.mutate(id, { onSuccess: onSuccess("Job closed"), onError })}
-        >
-          Close
-        </Button>
-      )}
-    </div>
+    <DropdownMenu>
+      <DropdownMenuTrigger
+        render={
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            className="min-w-28 justify-between border-neutral-200 bg-neutral-50 text-neutral-800 hover:bg-neutral-100"
+          />
+        }
+      >
+        Actions
+        <MoreHorizontal className="size-4" aria-hidden="true" />
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end" className="w-44">
+        <DropdownMenuGroup>
+          <DropdownMenuLabel>Job actions</DropdownMenuLabel>
+          <DropdownMenuSeparator />
+          <DropdownMenuItem render={<Link href={`/admin/jobs/${id}/edit`} />}>
+            <Pencil className="size-4" aria-hidden="true" />
+            Edit details
+          </DropdownMenuItem>
+          {status !== "published" && (
+            <DropdownMenuItem
+              disabled={publish.isPending}
+              onClick={() => publish.mutate(id, { onSuccess: onSuccess("Job published"), onError })}
+            >
+              <CheckCircle2 className="size-4" aria-hidden="true" />
+              Publish
+            </DropdownMenuItem>
+          )}
+          {status !== "closed" && (
+            <DropdownMenuItem
+              disabled={close.isPending}
+              onClick={() => close.mutate(id, { onSuccess: onSuccess("Job closed"), onError })}
+            >
+              <LockKeyhole className="size-4" aria-hidden="true" />
+              Close
+            </DropdownMenuItem>
+          )}
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

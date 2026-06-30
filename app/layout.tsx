@@ -16,8 +16,8 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HR Portal - My Lagos Food App",
-  description: "Human resources management portal for My Lagos Food App",
+  title: "HR Portal - Produce for Lagos App",
+  description: "Human resources management portal for Produce for Lagos App",
 };
 
 export default function RootLayout({

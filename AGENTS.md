@@ -65,6 +65,7 @@ npm run db:push      # Push schema (dev only)
 - shadcn/ui components with CSS variables
 - `tw-animate-css` for animations
 - `cn()` utility from `@/lib/utils` for class merging
+- Before admin/dashboard UI work, read `docs/dashboard-design-system/README.md` and follow its linked rules. These rules are admin-only and must not drift into public pages.
 
 ## Path Aliases
 

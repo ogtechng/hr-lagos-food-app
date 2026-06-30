@@ -1,8 +1,16 @@
 import { NextRequest } from "next/server";
 
 import { requireAdmin } from "@/app/api/_auth/require-admin";
-import { createJobSchema, jobFiltersSchema } from "@/app/api/_schemas/jobs/job.schema";
-import { createJobService, listJobsService } from "@/app/api/_services/jobs/jobs.service";
+import {
+  adminJobListQuerySchema,
+  createJobSchema,
+  jobFiltersSchema,
+} from "@/app/api/_schemas/jobs/job.schema";
+import {
+  createJobService,
+  listJobsPaginatedService,
+  listJobsService,
+} from "@/app/api/_services/jobs/jobs.service";
 import {
   created,
   handleApiError,
@@ -14,7 +22,14 @@ import {
 export async function GET(request: NextRequest) {
   try {
     await requireAdmin();
-    const filters = jobFiltersSchema.parse(searchParamsToObject(request.nextUrl.searchParams));
+    const raw = searchParamsToObject(request.nextUrl.searchParams);
+
+    if (raw.page || raw.pageSize || raw.sortBy || raw.sortDir) {
+      const query = adminJobListQuerySchema.parse(raw);
+      return ok(await listJobsPaginatedService(query));
+    }
+
+    const filters = jobFiltersSchema.parse(raw);
     return ok(await listJobsService(filters));
   } catch (error) {
     return handleApiError(error);

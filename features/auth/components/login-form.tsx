@@ -32,7 +32,7 @@ export function LoginForm() {
     <Card className="w-full max-w-sm">
       <CardHeader>
         <CardTitle>Admin sign in</CardTitle>
-        <CardDescription>Use your My Lagos Food App admin account.</CardDescription>
+        <CardDescription>Use your Produce for Lagos admin account.</CardDescription>
       </CardHeader>
       <CardContent>
         <form action={formAction} className="space-y-5">

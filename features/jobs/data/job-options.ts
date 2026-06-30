@@ -6,3 +6,9 @@ export const JOB_STATUS_OPTIONS: { value: JobStatus; label: string }[] = [
   { value: "published", label: "Published" },
   { value: "closed", label: "Closed" },
 ];
+
+export const EMPLOYMENT_TYPE_OPTIONS = [
+  "Full-time",
+  "Part-time",
+  "Contract",
+] as const;

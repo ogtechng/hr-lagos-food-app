@@ -14,11 +14,11 @@ const ENTITY_SEED = [
   {
     name: "P4L",
     slug: "p4l",
-    description: "Last-mile delivery and logistics arm of the My Lagos Food group.",
+    description: "Last-mile delivery and logistics arm of the Produce for Lagos group.",
     isActive: true,
   },
   {
-    name: "My Lagos Food App",
+    name: "Produce for Lagos App",
     slug: "my-lagos-food-app",
     description: "Flagship consumer food-ordering platform serving Lagos.",
     isActive: true,

@@ -18,12 +18,19 @@ interface ReportsFiltersProps {
     entity?: string;
     job?: string;
     status?: string;
+    search?: string;
   };
 }
 
 export function ReportsFilters({ entities, jobs, values }: ReportsFiltersProps) {
   return (
-    <form className="grid gap-3 rounded-3xl border border-[#ddd8cc] bg-[#fbfaf6] p-4 md:grid-cols-2 xl:grid-cols-[0.9fr_0.9fr_1fr_1fr_0.9fr_auto] xl:items-end">
+    <form className="admin-filter-panel grid gap-3 rounded-lg p-3 md:grid-cols-2 xl:grid-cols-[1fr_0.8fr_0.8fr_1fr_1fr_0.9fr_auto] xl:items-end">
+      <label className="grid gap-2">
+        <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
+          Search
+        </span>
+        <Input name="search" placeholder="Applicant, job, entity" defaultValue={values.search} />
+      </label>
       <label className="grid gap-2">
         <span className="text-xs font-semibold uppercase tracking-[0.12em] text-muted-foreground">
           Date from
@@ -43,7 +50,7 @@ export function ReportsFilters({ entities, jobs, values }: ReportsFiltersProps) 
         <select
           name="entity"
           defaultValue={values.entity ?? ""}
-          className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 w-full border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All entities</option>
           {entities.map((entity) => (
@@ -60,7 +67,7 @@ export function ReportsFilters({ entities, jobs, values }: ReportsFiltersProps) 
         <select
           name="job"
           defaultValue={values.job ?? ""}
-          className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 w-full border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All jobs</option>
           {jobs.map((job) => (
@@ -77,7 +84,7 @@ export function ReportsFilters({ entities, jobs, values }: ReportsFiltersProps) 
         <select
           name="status"
           defaultValue={values.status ?? ""}
-          className="h-8 w-full rounded-lg border border-input bg-background px-2.5 text-sm"
+          className="admin-control h-9 w-full border border-input bg-background px-2.5 text-sm"
         >
           <option value="">All statuses</option>
           <option value="submitted">Submitted</option>

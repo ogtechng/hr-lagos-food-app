@@ -35,7 +35,7 @@ const tabs = ["Operations", "Kitchen teams", "Logistics"];
 
 const entityLogos = [
   { name: "BulkFood", src: "/bulkfood.png", width: 594, height: 296 },
-  { name: "My Lagos Food App", src: "/logo.svg", width: 816, height: 264 },
+  { name: "Produce for Lagos App", src: "/mylagosfoodapp-logo.svg", width: 816, height: 264 },
   { name: "P4L", src: "/p4lagos.png", width: 199, height: 87 },
 ];
 
@@ -189,7 +189,7 @@ export default async function PublicHomePage() {
             </div>
             <p className="relative mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[#78a783] px-3 py-1 text-sm font-medium text-[#c7ddbd]">
               <BriefcaseBusiness className="size-4" aria-hidden="true" />
-              My Lagos Food Careers
+              Produce for Lagos Careers
             </p>
             <h1 className="relative mx-auto max-w-4xl font-display text-5xl leading-[0.95] tracking-tight md:text-7xl">
               Meet the hiring portal for <span className="text-[#dfff67]">Lagos food teams.</span>
@@ -252,7 +252,7 @@ export default async function PublicHomePage() {
             <div>
               <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ddd8cc] bg-white px-3 py-1.5 text-xs font-medium text-[#4f4a41]">
                 <span className="size-2 rounded-full bg-[#189044]" aria-hidden="true" />
-                Careers at My Lagos Food
+                Careers at Produce for Lagos
               </p>
               <h2 className="max-w-3xl font-display text-4xl leading-[0.98] tracking-tight md:text-6xl">
                 Recruiting operations with visibility from role to decision.

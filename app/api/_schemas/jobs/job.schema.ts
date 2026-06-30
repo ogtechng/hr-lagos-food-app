@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { listQuerySchema } from "@/app/api/_schemas/shared/list-query.schema";
+
 export const jobStatusSchema = z.enum(["draft", "published", "closed"]);
 
 export const jobIdParamSchema = z.object({
@@ -13,12 +15,6 @@ export const jobSlugParamSchema = z.object({
 export const createJobSchema = z.object({
   entityId: z.string().uuid(),
   title: z.string().trim().min(1).max(255),
-  slug: z
-    .string()
-    .trim()
-    .min(1)
-    .max(255)
-    .regex(/^[a-z0-9]+(?:-[a-z0-9]+)*$/, "Slug must be kebab-case"),
   department: z.string().trim().max(255).optional().nullable(),
   location: z.string().trim().min(1).max(255),
   employmentType: z.string().trim().max(100).optional().nullable(),
@@ -44,6 +40,15 @@ export const jobFiltersSchema = z.object({
   search: z.string().trim().max(255).optional(),
 });
 
+export const adminJobListQuerySchema = jobFiltersSchema.merge(
+  listQuerySchema.extend({
+    sortBy: z
+      .enum(["title", "entity", "department", "location", "status", "createdAt"])
+      .catch("createdAt"),
+  }),
+);
+
 export type CreateJobInput = z.infer<typeof createJobSchema>;
 export type UpdateJobInput = z.infer<typeof updateJobSchema>;
 export type JobFilters = z.infer<typeof jobFiltersSchema>;
+export type AdminJobListQuery = z.infer<typeof adminJobListQuerySchema>;

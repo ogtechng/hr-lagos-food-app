@@ -1,79 +1,70 @@
-import Link from "next/link";
+"use client";
 
-import { EmptyState } from "@/components/shared/empty-state";
+import type { PaginatedResult } from "@/app/api/_schemas/shared/list-query.schema";
+import { DataTable, type DataTableColumn } from "@/components/shared/data-table";
 import { StatusBadge } from "@/components/shared/status-badge";
-import { Button } from "@/components/ui/button";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { JobAdminActions } from "@/features/jobs/components/admin/job-admin-actions";
-
-interface AdminJob {
-  id: string;
-  title: string;
-  entityName: string;
-  location: string;
-  status: string;
-  createdAt: Date;
-}
+import type { AdminJob } from "@/features/jobs/services/core_api";
 
 interface JobsTableProps {
-  jobs: AdminJob[];
+  result: PaginatedResult<AdminJob>;
 }
 
-export function JobsTable({ jobs }: JobsTableProps) {
-  if (jobs.length === 0) {
-    return (
-      <EmptyState
-        title="No jobs found"
-        description="Adjust the filters or create a new role when hiring opens."
-      />
-    );
-  }
+export function JobsTable({ result }: JobsTableProps) {
+  const columns: DataTableColumn<AdminJob>[] = [
+    {
+      id: "title",
+      accessorKey: "title",
+      header: "Job",
+      meta: { sortable: true },
+      cell: ({ row }) => <span className="font-medium">{row.original.title}</span>,
+    },
+    {
+      id: "entity",
+      accessorKey: "entityName",
+      header: "Entity",
+      meta: { sortable: true },
+    },
+    {
+      id: "department",
+      accessorKey: "department",
+      header: "Department",
+      meta: { sortable: true },
+      cell: ({ row }) => row.original.department ?? "Not set",
+    },
+    {
+      id: "location",
+      accessorKey: "location",
+      header: "Location",
+      meta: { sortable: true },
+    },
+    {
+      id: "status",
+      accessorKey: "status",
+      header: "Status",
+      meta: { sortable: true },
+      cell: ({ row }) => <StatusBadge status={row.original.status} />,
+    },
+    {
+      id: "actions",
+      header: "Actions",
+      cell: ({ row }) => (
+        <JobAdminActions id={row.original.id} status={row.original.status as never} />
+      ),
+    },
+  ];
 
   return (
-    <div className="overflow-x-auto rounded-3xl border border-[#ddd8cc] bg-[#fbfaf6]">
-      <Table className="min-w-[760px]">
-        <TableHeader>
-          <TableRow>
-            <TableHead>Job</TableHead>
-            <TableHead>Entity</TableHead>
-            <TableHead>Location</TableHead>
-            <TableHead>Status</TableHead>
-            <TableHead>Actions</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {jobs.map((job) => (
-            <TableRow key={job.id}>
-              <TableCell className="font-medium">{job.title}</TableCell>
-              <TableCell>{job.entityName}</TableCell>
-              <TableCell>{job.location}</TableCell>
-              <TableCell>
-                <StatusBadge status={job.status} />
-              </TableCell>
-              <TableCell>
-                <div className="flex flex-wrap gap-2">
-                  <Button
-                    nativeButton={false}
-                    variant="ghost"
-                    size="sm"
-                    render={<Link href={`/admin/jobs/${job.id}/edit`} />}
-                  >
-                    Edit
-                  </Button>
-                  <JobAdminActions id={job.id} status={job.status as never} />
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <DataTable
+      columns={columns}
+      data={result.rows}
+      page={result.page}
+      pageSize={result.pageSize}
+      total={result.total}
+      pageCount={result.pageCount}
+      emptyTitle="No jobs found"
+      emptyDescription="Adjust the filters or create a new role when hiring opens."
+      minWidth="900px"
+    />
   );
 }

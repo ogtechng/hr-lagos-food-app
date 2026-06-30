@@ -28,12 +28,12 @@ export function PublicNavbar() {
         <Link
           href="/"
           className="flex items-center gap-3"
-          aria-label="My Lagos Food Careers — home"
+          aria-label="Produce for Lagos Careers — home"
           onClick={() => setOpen(false)}
         >
           <Image
             src="/logo.svg"
-            alt="My Lagos Food App"
+            alt="Produce for Lagos App"
             width={816}
             height={264}
             priority

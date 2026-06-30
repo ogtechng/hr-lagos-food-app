@@ -1,5 +1,9 @@
 import { requireAdmin } from "@/app/api/_auth/require-admin";
-import { reportQuerySchema, type ReportFilters } from "@/app/api/_schemas/reports/report.schema";
+import {
+  reportListQuerySchema,
+  reportQuerySchema,
+  type ReportFilters,
+} from "@/app/api/_schemas/reports/report.schema";
 import { AdminPageShell } from "@/components/shared/admin-page-shell";
 import { PageHeader } from "@/components/shared/page-header";
 import { make_entities_service } from "@/features/entities/services";
@@ -24,7 +28,7 @@ function first(value: string | string[] | undefined) {
 function buildSearchParams(raw: Record<string, string | string[] | undefined>) {
   const params = new URLSearchParams();
 
-  for (const key of ["dateFrom", "dateTo", "entity", "job", "status"]) {
+  for (const key of ["dateFrom", "dateTo", "entity", "job", "status", "search"]) {
     const value = first(raw[key]);
     if (value) params.set(key, value);
   }
@@ -37,6 +41,13 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const raw = (await searchParams) ?? {};
   const parsedFilters = reportQuerySchema.safeParse(raw);
   const filters: ReportFilters = parsedFilters.success ? parsedFilters.data : {};
+  const tableQuery = reportListQuerySchema.parse({
+    ...filters,
+    page: first(raw.page),
+    pageSize: first(raw.pageSize),
+    sortBy: first(raw.sortBy),
+    sortDir: first(raw.sortDir),
+  });
   const params = buildSearchParams(raw);
 
   const api = await createServerApiClient();
@@ -44,7 +55,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
   const entitiesService = make_entities_service(api);
   const jobsService = make_jobs_service(api);
   const [rows, summary, entities, jobs] = await Promise.all([
-    reportsService.get_applications(filters),
+    reportsService.get_applications_paginated(tableQuery),
     reportsService.get_applications_summary(filters),
     entitiesService.get_all(),
     jobsService.get_all(),
@@ -61,7 +72,7 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
         <ReportsExportButton searchParams={params} />
       </PageHeader>
       {!parsedFilters.success && (
-        <div className="rounded-2xl border border-destructive/30 bg-destructive/5 p-4 text-sm text-destructive">
+        <div className="rounded-lg border border-destructive/30 bg-destructive/5 p-3 text-sm text-destructive">
           Some filters were invalid, so the report was reset.
         </div>
       )}
@@ -74,10 +85,11 @@ export default async function ReportsPage({ searchParams }: ReportsPageProps) {
           entity: first(raw.entity),
           job: first(raw.job),
           status: first(raw.status),
+          search: first(raw.search),
         }}
       />
       <ReportsSummaryCards summary={summary} />
-      <ReportsTable rows={rows} />
+      <ReportsTable result={rows} />
     </AdminPageShell>
   );
 }
