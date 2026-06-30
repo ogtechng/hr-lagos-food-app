@@ -20,7 +20,6 @@ import {
   applicantFaqs,
   challengeMetrics,
   companies,
-  jobFamilies,
   missionObjectives,
 } from "@/config/public-careers-content";
 import { make_jobs_service } from "@/features/jobs/services";
@@ -99,7 +98,7 @@ export default async function PublicHomePage() {
           <div className="relative">
             <div className="absolute -left-5 top-8 hidden h-44 w-44 border border-[#6d9a70]/35 md:block" />
             <div className="absolute -right-4 bottom-12 hidden h-28 w-28 border border-[#dfff67]/60 md:block" />
-            <div className="relative overflow-hidden rounded-[1.25rem] border border-[#becbb5] bg-[#e9eddf] shadow-[0_28px_70px_-40px_rgba(11,61,33,0.45)]">
+            <div className="relative overflow-hidden rounded-[2rem] border border-[#becbb5] bg-[#e9eddf] shadow-[0_28px_70px_-40px_rgba(11,61,33,0.45)]">
               <Image
                 src="/images/produce-for-lagos-field-team.jpeg"
                 alt="Produce for Lagos field team visiting an agricultural site."
@@ -163,7 +162,7 @@ export default async function PublicHomePage() {
 
       <section id="talent-community" className="border-b border-[#d8d3c7] py-14 md:py-20">
         <Container>
-          <div className="grid gap-8 rounded-[1rem] border border-[#0a5a32] bg-[#0a5a32] p-6 text-[#f3f5ea] md:grid-cols-[1fr_0.7fr] md:p-10">
+          <div className="grid gap-8 rounded-[2rem] border border-[#0a5a32] bg-[#0a5a32] p-6 text-[#f3f5ea] md:grid-cols-[1fr_0.7fr] md:p-10">
             <div>
               <p className="text-sm font-semibold text-[#dfff67]">Join Our Talent Community</p>
               <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
@@ -252,7 +251,7 @@ export default async function PublicHomePage() {
               </p>
             </div>
           </div>
-          <div className="mt-12 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] sm:grid-cols-2 lg:grid-cols-5">
+          <div className="mt-12 grid gap-px overflow-hidden rounded-[1.75rem] border border-[#d8d3c7] bg-[#d8d3c7] sm:grid-cols-2 lg:grid-cols-5">
             {challengeMetrics.map((metric) => (
               <div key={metric.label} className="bg-[#fbfaf6] p-5 md:p-6">
                 <p className="font-display text-3xl font-semibold tracking-tight text-[#0a5a32]">
@@ -346,7 +345,7 @@ export default async function PublicHomePage() {
               resilience.
             </p>
           </div>
-          <div className="mt-10 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
+          <div className="mt-10 grid gap-px overflow-hidden rounded-[1.75rem] border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
             {companies.map((company, index) => (
               <article key={company.name} className="bg-[#fbfaf6] p-6 md:p-8">
                 <div className="flex min-h-16 items-start justify-between gap-4">
@@ -383,11 +382,11 @@ export default async function PublicHomePage() {
                 Current Vacancies
               </p>
               <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
-                Search by company or by function.
+                Explore the roles currently open.
               </h2>
               <p className="mt-5 text-base leading-7 text-[#4f564d]">
-                People tend to think about their careers by career family. Choose a function to see
-                opportunities across P4L Fund, LAFSINCO, BulkFood, and EkoLog.
+                Open opportunities appear as they are published across P4L Fund, LAFSINCO,
+                BulkFood, and EkoLog.
               </p>
               <Button
                 nativeButton={false}
@@ -400,27 +399,12 @@ export default async function PublicHomePage() {
               </Button>
             </div>
             <div>
-              <div className="grid gap-2 sm:grid-cols-2">
-                {jobFamilies.map((family) => (
-                  <Link
-                    key={family}
-                    href={`/jobs?department=${encodeURIComponent(family)}`}
-                    className="group flex min-h-16 items-center justify-between gap-4 border border-[#d8d3c7] bg-white/70 px-4 py-3 text-sm font-semibold text-[#243526] transition-colors hover:border-[#7fad70] hover:bg-[#eef5e8]"
-                  >
-                    {family}
-                    <ArrowRight
-                      className="size-4 shrink-0 text-[#0a5a32] transition-transform group-hover:translate-x-0.5"
-                      aria-hidden="true"
-                    />
-                  </Link>
-                ))}
-              </div>
-              <div className="mt-8 grid gap-4 md:grid-cols-2">
+              <div className="grid gap-4 md:grid-cols-2">
                 {jobs.map((job) => (
                   <Link
                     key={job.id}
                     href={`/jobs/${job.slug}`}
-                    className="border border-[#d8d3c7] bg-white p-5 transition-colors hover:border-[#7fad70]"
+                    className="rounded-[1.25rem] border border-[#d8d3c7] bg-white p-5 transition-colors hover:border-[#7fad70]"
                   >
                     <p className="text-sm font-semibold text-[#0a5a32]">{job.entityName}</p>
                     <h3 className="mt-2 font-display text-xl font-semibold text-[#173526]">
@@ -450,7 +434,7 @@ export default async function PublicHomePage() {
             </div>
             <ShieldCheck className="hidden size-12 text-[#0a5a32] md:block" aria-hidden="true" />
           </div>
-          <div className="mt-8 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
+          <div className="mt-8 grid gap-px overflow-hidden rounded-[1.75rem] border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
             {applicantFaqs.map((faq) => (
               <div key={faq.question} className="bg-[#fbfaf6] p-6">
                 <h3 className="font-display text-xl font-semibold text-[#173526]">
