@@ -1,7 +1,9 @@
-import { BriefcaseBusiness } from "lucide-react";
+import Link from "next/link";
+import { ArrowRight, BriefcaseBusiness } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { Section } from "@/components/shared/section";
+import { jobFamilies } from "@/config/public-careers-content";
 import { JobFilters } from "@/features/jobs/components/job-filters";
 import { JobList } from "@/features/jobs/components/job-list";
 import { publicJobFiltersSchema } from "@/features/jobs/schemas/public-job-filters.schema";
@@ -21,6 +23,10 @@ function uniqueValues(values: Array<string | null | undefined>) {
   return Array.from(new Set(values.filter((value): value is string => Boolean(value)))).sort();
 }
 
+function mergedDepartments(jobs: PublicJob[]) {
+  return Array.from(new Set([...jobFamilies, ...uniqueValues(jobs.map((job) => job.department))]));
+}
+
 export default async function JobsPage({ searchParams }: JobsPageProps) {
   const rawSearchParams = (await searchParams) ?? {};
   const filters = publicJobFiltersSchema.parse(rawSearchParams);
@@ -37,6 +43,7 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
       jobsService.get_published({
         search: filters.q,
         entitySlug: filters.entity,
+        department: filters.department,
         location: filters.location,
         employmentType: filters.employmentType,
       }),
@@ -50,9 +57,9 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
   }
 
   return (
-    <Section className="py-12 md:py-16">
+    <Section className="bg-[#f7f5ef] py-12 md:py-16">
       <Container className="space-y-8">
-        <div className="hero-noise relative overflow-hidden rounded-[1.25rem] border border-[#0c5b30] px-6 py-8 text-[#f2f0e6] md:px-10 md:py-10">
+        <div className="hero-noise relative overflow-hidden border border-[#0c5b30] bg-[#0a5a32] px-6 py-8 text-[#f2f0e6] md:px-10 md:py-10">
           <div className="relative flex flex-col gap-4">
             <div className="flex items-center justify-between gap-4">
               <span className="inline-flex items-center gap-2 rounded-full border border-[#78a783] px-3 py-1 text-xs font-medium text-[#c7ddbd]">
@@ -64,18 +71,36 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
               </span>
             </div>
             <h1 className="max-w-3xl font-display text-3xl leading-tight tracking-tight md:text-4xl">
-              Find your next role across <span className="text-[#dfff67]">Lagos food teams.</span>
+              Find your next role across{" "}
+              <span className="text-[#dfff67]">Produce for Lagos companies.</span>
             </h1>
             <p className="max-w-2xl text-sm leading-6 text-[#d9e8d2] md:text-base">
-              Search roles across active Lagos food entities by title, team, location, and work
-              type.
+              Search by company, function, location, work type, or role title across P4L Fund,
+              LAFSINCO, BulkFood, and EkoLog.
             </p>
           </div>
+        </div>
+
+        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {jobFamilies.map((family) => (
+            <Link
+              key={family}
+              href={`/jobs?department=${encodeURIComponent(family)}`}
+              className="group flex min-h-14 items-center justify-between gap-3 border border-[#d8d3c7] bg-white/80 px-4 py-3 text-sm font-semibold text-[#243526] transition-colors hover:border-[#7fad70] hover:bg-[#eef5e8]"
+            >
+              {family}
+              <ArrowRight
+                className="size-4 shrink-0 text-[#0a5a32] transition-transform group-hover:translate-x-0.5"
+                aria-hidden="true"
+              />
+            </Link>
+          ))}
         </div>
 
         <JobFilters
           filters={filters}
           entities={entities}
+          departments={mergedDepartments(allJobs)}
           locations={uniqueValues(allJobs.map((job) => job.location))}
           employmentTypes={uniqueValues(allJobs.map((job) => job.employmentType))}
         />

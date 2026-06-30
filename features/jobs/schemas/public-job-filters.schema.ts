@@ -11,6 +11,7 @@ const queryValueSchema = z
 export const publicJobFiltersSchema = z.object({
   q: queryValueSchema.optional(),
   entity: queryValueSchema.optional(),
+  department: queryValueSchema.optional(),
   location: queryValueSchema.optional(),
   employmentType: queryValueSchema.optional(),
 });

@@ -12,14 +12,21 @@ import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
+  { href: "/#about", label: "About" },
+  { href: "/#companies", label: "Companies" },
   { href: "/jobs", label: "Jobs" },
+  { href: "/#faqs", label: "FAQs" },
 ] as const;
 
 export function PublicNavbar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
-  const isActive = (href: string) => (href === "/" ? pathname === "/" : pathname.startsWith(href));
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    if (href.includes("#")) return false;
+    return pathname.startsWith(href);
+  };
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md supports-[backdrop-filter]:bg-background/65">
@@ -32,12 +39,12 @@ export function PublicNavbar() {
           onClick={() => setOpen(false)}
         >
           <Image
-            src="/logo.svg"
-            alt="Produce for Lagos App"
-            width={816}
-            height={264}
+            src="/images/produce-for-lagos-programme-logo.png"
+            alt="Produce for Lagos Programme"
+            width={199}
+            height={87}
             priority
-            className="h-9 w-auto"
+            className="h-10 w-auto"
           />
           <span className="hidden h-5 w-px bg-border sm:block" aria-hidden="true" />
           <span className="hidden font-display text-sm font-semibold tracking-tight text-foreground sm:block">
@@ -70,7 +77,7 @@ export function PublicNavbar() {
         {/* Desktop CTA */}
         <div className="hidden md:block">
           <Button nativeButton={false} size="lg" render={<Link href="/jobs" />}>
-            Browse Jobs
+            Browse roles
             <ArrowRight className="size-4" aria-hidden="true" />
           </Button>
         </div>
@@ -116,7 +123,7 @@ export function PublicNavbar() {
               className="mt-2 w-full"
               render={<Link href="/jobs" onClick={() => setOpen(false)} />}
             >
-              Browse Jobs
+              Browse roles
               <ArrowRight className="size-4" aria-hidden="true" />
             </Button>
           </Container>

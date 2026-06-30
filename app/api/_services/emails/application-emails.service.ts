@@ -21,13 +21,13 @@ interface SendEmailInput {
 
 /** Recruitment team inbox notified on every new application (override via RECRUITMENT_EMAIL). */
 function recruitmentEmail() {
-  return process.env.RECRUITMENT_EMAIL ?? "recruitment@lagosfoodapp.com";
+  return process.env.RECRUITMENT_EMAIL ?? "recruitments@ProduceforLagos.com";
 }
 
 /** Outbound sender address (override via RESEND_FROM_EMAIL). */
 function senderAddress() {
   return (
-    process.env.RESEND_FROM_EMAIL ?? "Produce for Lagos Careers <recruitments@mylagosfoodapp.com>"
+    process.env.RESEND_FROM_EMAIL ?? "Produce for Lagos Careers <recruitments@ProduceforLagos.com>"
   );
 }
 

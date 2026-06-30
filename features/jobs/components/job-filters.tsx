@@ -15,14 +15,21 @@ import type { Entity } from "@/app/api/_db/schema";
 interface JobFiltersProps {
   filters: PublicJobFilters;
   entities: Entity[];
+  departments: string[];
   locations: string[];
   employmentTypes: string[];
 }
 
-export function JobFilters({ filters, entities, locations, employmentTypes }: JobFiltersProps) {
+export function JobFilters({
+  filters,
+  entities,
+  departments,
+  locations,
+  employmentTypes,
+}: JobFiltersProps) {
   return (
-    <form action="/jobs" className="rounded-2xl border bg-card p-4 md:p-5">
-      <div className="grid items-end gap-4 lg:grid-cols-[1.4fr_1fr_1fr_1fr_auto]">
+    <form action="/jobs" className="border border-[#d8d3c7] bg-white/80 p-4 md:p-5">
+      <div className="grid items-end gap-4 lg:grid-cols-[1.2fr_1fr_1fr_1fr_1fr_auto]">
         <div className="space-y-2">
           <label htmlFor="job-search" className="text-sm font-semibold">
             Search
@@ -41,6 +48,23 @@ export function JobFilters({ filters, entities, locations, employmentTypes }: Jo
               {entities.map((entity) => (
                 <SelectItem key={entity.id} value={entity.slug}>
                   {entity.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="space-y-2">
+          <span className="text-sm font-semibold">Function</span>
+          <Select name="department" defaultValue={filters.department ?? ""}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="All functions" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="">All functions</SelectItem>
+              {departments.map((department) => (
+                <SelectItem key={department} value={department}>
+                  {department}
                 </SelectItem>
               ))}
             </SelectContent>

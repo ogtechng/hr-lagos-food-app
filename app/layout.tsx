@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import { Hanken_Grotesk, Inter } from "next/font/google";
+import { Geist, Hanken_Grotesk } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import { QueryProvider } from "@/context/query-provider";
 import "./globals.css";
 
-const inter = Inter({
+const geist = Geist({
   variable: "--font-sans",
   subsets: ["latin"],
 });
@@ -16,8 +16,9 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "HR Portal - Produce for Lagos App",
-  description: "Human resources management portal for Produce for Lagos App",
+  title: "Produce for Lagos Careers",
+  description:
+    "Recruitment portal for Produce for Lagos roles across infrastructure, finance, logistics, food systems, and trading.",
 };
 
 export default function RootLayout({
@@ -28,14 +29,14 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${hankenGrotesk.variable} h-full antialiased`}
+      className={`${geist.variable} ${hankenGrotesk.variable} h-full antialiased`}
       style={
         {
-          "--font-body": inter.style.fontFamily,
+          "--font-body": geist.style.fontFamily,
         } as React.CSSProperties
       }
     >
-      <body className="min-h-full flex flex-col bg-background text-foreground">
+      <body className="min-h-full w-screen overflow-x-hidden flex flex-col bg-background text-foreground">
         <QueryProvider>{children}</QueryProvider>
         <Toaster richColors />
       </body>

@@ -5,15 +5,24 @@ import {
   BadgeCheck,
   BriefcaseBusiness,
   CheckCircle2,
-  ClipboardList,
-  FileText,
-  Send,
+  CircleDollarSign,
+  Factory,
+  Leaf,
+  Network,
   ShieldCheck,
-  UploadCloud,
+  Truck,
   UsersRound,
 } from "lucide-react";
 
+import { Container } from "@/components/shared/container";
 import { Button } from "@/components/ui/button";
+import {
+  applicantFaqs,
+  challengeMetrics,
+  companies,
+  jobFamilies,
+  missionObjectives,
+} from "@/config/public-careers-content";
 import { make_jobs_service } from "@/features/jobs/services";
 import { createServerApiClient } from "@/lib/server-api-client";
 
@@ -23,440 +32,450 @@ async function getLandingData() {
   try {
     const api = await createServerApiClient();
     const jobs = await make_jobs_service(api).get_published();
-    return { jobs: jobs.slice(0, 5) };
+    return { jobs: jobs.slice(0, 4), openRoleCount: jobs.length };
   } catch {
-    return { jobs: [] };
+    return { jobs: [], openRoleCount: 0 };
   }
 }
 
-const channels = ["Kitchen", "Logistics", "Support", "Warehouse", "Engineering"];
-
-const tabs = ["Operations", "Kitchen teams", "Logistics"];
-
-const entityLogos = [
-  { name: "BulkFood", src: "/bulkfood.png", width: 594, height: 296 },
-  { name: "Produce for Lagos App", src: "/logo.png", width: 1280, height: 911 },
-  { name: "P4L", src: "/p4lagos.png", width: 199, height: 87 },
-];
-
-const flow = [
-  { label: "Browse role", icon: BriefcaseBusiness },
-  { label: "Short form", icon: ClipboardList },
-  { label: "Upload CV", icon: UploadCloud },
-  { label: "Under review", icon: ShieldCheck },
-  { label: "Email update", icon: Send },
-];
-
-const stack = [
-  {
-    eyebrow: "Intake",
-    title: "No-account applications",
-    body: "Applicants can move from a published role to a complete application without creating a profile first.",
-    icon: FileText,
-    media: "bg-orange-100",
-    iconWrap: "border-orange-300/70 bg-white/85 text-orange-600",
-    accent: "text-orange-600",
-  },
-  {
-    eyebrow: "Updates",
-    title: "Clear status updates",
-    body: "Every application moves through a transparent review, and you are notified by email as your status changes.",
-    icon: BadgeCheck,
-    media: "bg-purple-100",
-    iconWrap: "border-purple-300/70 bg-white/85 text-purple-600",
-    accent: "text-purple-600",
-  },
-];
-
-const faqs = [
-  [
-    "Do applicants need an account?",
-    "No. The application flow is public and intentionally lightweight.",
-  ],
-  ["Which CV formats work?", "PDF, DOC, and DOCX files are accepted in the upload flow."],
-  [
-    "Who reviews my application?",
-    "The hiring team for the role reviews your application, and you receive email updates as it progresses.",
-  ],
-  ["How are applicants updated?", "Application status updates can be sent by email."],
-];
-
-function HiringMap() {
-  return (
-    <div className="relative min-h-[20rem] overflow-hidden rounded-[1.15rem] border border-[#9ec5aa] bg-[#eef5ec] p-4">
-      <div className="absolute inset-0 bg-[linear-gradient(#c8ddcc_1px,transparent_1px),linear-gradient(90deg,#c8ddcc_1px,transparent_1px)] bg-[size:46px_46px] opacity-60" />
-      <div className="relative grid h-full grid-cols-4 gap-3">
-        {Array.from({ length: 12 }).map((_, index) => (
-          <div key={index} className="rounded-lg border border-[#9ec5aa] bg-[#f9fbf4]/80 p-2">
-            <div className="h-2 w-12 rounded-full bg-[#b4d3bb]" />
-            <div className="mt-3 grid grid-cols-2 gap-1.5">
-              <div className="h-8 rounded border border-[#bad2bf] bg-white/70" />
-              <div className="h-8 rounded border border-[#bad2bf] bg-white/70" />
-            </div>
-          </div>
-        ))}
-      </div>
-      <div className="absolute left-[38%] top-[42%] w-36 rounded-xl border border-[#0b6132] bg-[#0b6132] p-3 text-[#eef8e7]">
-        <UsersRound className="mb-2 size-4" aria-hidden="true" />
-        <p className="text-xs font-semibold">Hiring desk</p>
-        <p className="mt-1 text-[0.68rem] leading-4 text-[#c6e3c9]">Applications reviewed here</p>
-      </div>
-    </div>
-  );
-}
-
-function LayeredDeployGraphic() {
-  return (
-    <div className="relative mx-auto flex min-h-[17rem] w-full max-w-sm items-center justify-center">
-      <div className="relative rounded-2xl flex aspect-square w-64 items-center justify-center overflow-hidden  bg-[#AACC00]/50 sm:w-72">
-        <div
-          className="pointer-events-none absolute -left-20 -top-16 h-44 w-44 rounded-full border border-[#0b6132]/18"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -right-24 -bottom-20 h-52 w-52 rounded-full border border-[#189044]/18"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -left-8 bottom-12 h-px w-40 -rotate-12 bg-[#0b6132]/20"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute -right-10 top-16 h-px w-44 rotate-12 bg-[#189044]/20"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute left-8 top-9 h-16 w-16 rotate-12 border border-[#0b6132]/14"
-          aria-hidden="true"
-        />
-        <div
-          className="pointer-events-none absolute bottom-8 right-9 text-2xl font-light leading-none text-[#0b6132]/20"
-          aria-hidden="true"
-        >
-          +
-        </div>
-      </div>
-      <div className="absolute flex size-28 items-center justify-center rounded-3xl border border-[#0b6132] bg-[#0b6132] text-[#d7eccc]">
-        <BriefcaseBusiness className="size-12" aria-hidden="true" />
-      </div>
-    </div>
-  );
-}
+const missionStats = [
+  { label: "Infrastructure", icon: Factory },
+  { label: "Finance", icon: CircleDollarSign },
+  { label: "Logistics", icon: Truck },
+  { label: "Food systems", icon: Leaf },
+] as const;
 
 export default async function PublicHomePage() {
-  const { jobs } = await getLandingData();
+  const { jobs, openRoleCount } = await getLandingData();
 
   return (
-    <div className="bg-[#f7f5ef] text-[#24231f]">
-      <section className="border-b border-[#ddd8cc] px-4 py-8 md:px-6 md:py-10">
-        <div className="mx-auto max-w-[1280px] overflow-hidden rounded-[1.35rem] border border-[#0c5b30] bg-[#064b28] text-center text-[#f2f0e6]">
-          <div className="hero-noise relative overflow-hidden px-5 py-16 md:px-12 md:py-24">
-            <div
-              className="pointer-events-none absolute -left-12 top-[19%] hidden h-24 w-64 -rotate-12 rounded-full border border-[#dfff67]/30 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -right-10 top-[17%] hidden h-20 w-56 rotate-12 rounded-full border border-[#f2f0e6]/25 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -bottom-3 left-[7%] hidden h-32 w-32 rotate-45 border border-[#f2f0e6]/18 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -bottom-2 right-[10%] hidden h-24 w-24 rotate-12 border border-[#dfff67]/28 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -left-6 top-[47%] hidden h-px w-48 rotate-[-18deg] bg-[#dfff67]/30 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute -right-8 top-[49%] hidden h-px w-56 rotate-12 bg-[#f2f0e6]/22 md:block"
-              aria-hidden="true"
-            />
-            <div
-              className="pointer-events-none absolute right-[18%] bottom-[21%] hidden text-2xl font-light leading-none text-[#dfff67]/35 md:block"
-              aria-hidden="true"
-            >
-              +
-            </div>
-            <div
-              className="pointer-events-none absolute left-[18%] bottom-[19%] hidden text-xl font-light leading-none text-[#f2f0e6]/28 md:block"
-              aria-hidden="true"
-            >
-              +
-            </div>
-            <p className="relative mx-auto mb-6 inline-flex items-center gap-2 rounded-full border border-[#78a783] px-3 py-1 text-sm font-medium text-[#c7ddbd]">
+    <div className="w-full overflow-x-clip bg-[#f0f7df] text-[#24231f]">
+      <section className=" border-b border-[#d8d3c7]">
+        <Container className="grid items-center gap-10 py-10 md:grid-cols-[0.92fr_1.08fr] md:py-14">
+          <div className="relative z-10 max-w-2xl">
+            <p className="inline-flex items-center gap-2 rounded-full border border-[#a7c7a5] bg-white/70 px-3 py-1.5 text-sm font-semibold text-[#17542f]">
               <BriefcaseBusiness className="size-4" aria-hidden="true" />
               Produce for Lagos Careers
             </p>
-            <h1 className="relative mx-auto max-w-4xl font-display text-5xl leading-[0.95] tracking-tight md:text-7xl">
-              Meet the hiring portal for <span className="text-[#dfff67]">Lagos food teams.</span>
+            <h1 className="mt-6 font-display text-5xl font-semibold leading-[0.94] tracking-tight text-[#102318] md:text-7xl">
+              Building the future of food.
             </h1>
-            <p className="relative mx-auto mt-7 max-w-2xl text-lg leading-8 text-[#d9e8d2] md:text-xl">
-              One place to discover open roles, upload your CV, and get email updates across our
-              food operations network.
+            <p className="mt-6 max-w-xl text-lg leading-8 text-[#4b5148] md:text-xl">
+              Produce for Lagos is driving one of Africa&apos;s most ambitious food systems
+              transformation programmes-re-imagining how food is produced, financed, traded,
+              transported and distributed.
             </p>
-            <div className="relative mt-9 flex justify-center">
-              <Link
-                href="/jobs"
-                className="inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-full bg-[#dfff67] px-6 text-sm font-semibold text-[#063b21] transition-colors hover:bg-[#ecff93] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#ecff93] focus-visible:ring-offset-2 focus-visible:ring-offset-[#064b28] sm:w-auto md:min-h-12 md:px-7 md:text-base"
+            <p className="mt-4 max-w-xl text-base leading-7 text-[#5d6259]">
+              If you want your work to improve millions of lives by redesigning the systems that
+              feed one of the world&apos;s most populous cities, we would love to hear from you.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Button
+                nativeButton={false}
+                size="lg"
+                className="bg-[#0a5a32] text-white hover:bg-[#084727]"
+                render={<Link href="/jobs" />}
               >
                 Browse roles
                 <ArrowRight className="size-4" aria-hidden="true" />
-              </Link>
+              </Button>
+              <Button
+                nativeButton={false}
+                size="lg"
+                variant="outline"
+                className="border-[#b6c9ad] bg-white/75 text-[#173526] hover:bg-[#eef5e8]"
+                render={<Link href="#talent-community" />}
+              >
+                Join talent community
+              </Button>
             </div>
-            <p className="relative mt-5 text-sm text-[#bfd8bc]">
-              {jobs.length
-                ? `${jobs.length} open roles currently featured.`
+            <p className="mt-5 text-sm font-medium text-[#667060]">
+              {openRoleCount
+                ? `${openRoleCount} open ${openRoleCount === 1 ? "role" : "roles"} currently published.`
                 : "Open roles appear here as they are published."}
             </p>
           </div>
-        </div>
-      </section>
 
-      <section className="border-b border-[#ddd8cc] px-4 md:px-6">
-        <div className="mx-auto grid max-w-[1280px] border-x border-[#ddd8cc] md:grid-cols-[0.55fr_1.45fr]">
-          <div className="border-b border-[#ddd8cc] bg-[#f1f0e9] p-7 md:border-b-0 md:border-r">
-            <p className="text-xs text-[#58544b]">Built for multi-entity hiring</p>
-            <p className="mt-8 font-display text-2xl">
-              Active entities <span className="text-[#189044]">connected</span>
-            </p>
-            <p className="mt-3 text-sm leading-6 text-[#58544b]">
-              Each team keeps its own jobs while applicants browse one public portal.
-            </p>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3">
-            {entityLogos.map((logo) => (
-              <div
-                key={logo.name}
-                className="flex min-h-28 items-center justify-center border-b border-r border-[#ddd8cc] p-6 last:border-r-0"
-              >
-                <Image
-                  src={logo.src}
-                  alt={logo.name}
-                  width={logo.width}
-                  height={logo.height}
-                  className={`w-auto object-contain ${
-                    logo.name === "Produce for Lagos App" ? "h-20" : "h-12"
-                  }`}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="border-b border-[#ddd8cc] bg-[#fbfaf6] py-14 md:py-20">
-        <div className="mx-auto max-w-[1280px] px-4 md:px-6">
-          <div className="grid gap-8 md:grid-cols-[0.95fr_1.05fr] md:items-end">
-            <div>
-              <p className="mb-5 inline-flex items-center gap-2 rounded-full border border-[#ddd8cc] bg-white px-3 py-1.5 text-xs font-medium text-[#4f4a41]">
-                <span className="size-2 rounded-full bg-[#189044]" aria-hidden="true" />
-                Careers at Produce for Lagos
-              </p>
-              <h2 className="max-w-3xl font-display text-4xl leading-[0.98] tracking-tight md:text-6xl">
-                Recruiting operations with visibility from role to decision.
-              </h2>
-            </div>
-            <div className="md:pb-2">
-              <p className="max-w-xl text-base leading-7 text-[#3f3c35] md:text-lg">
-                Applying should feel calm and clear. Browse open roles, apply in minutes with a
-                short form and your CV, and track your status by email.
-              </p>
-              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Button
-                  nativeButton={false}
-                  size={"lg"}
-                  className="bg-[#171714] text-white hover:bg-[#2a2924]"
-                  render={<Link href="/jobs" />}
-                >
-                  Browse open roles
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="mt-12 w-full overflow-hidden border-y border-[#d8d3c7] bg-[#efece3] md:mt-16">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="https://res.cloudinary.com/dsh9lmk7j/image/upload/v1781771679/DJI_0332_xxrmo3.jpg"
-            alt="Aerial view across the Lagos food operations network."
-            loading="eager"
-            className="aspect-16/10 w-full object-cover sm:aspect-16/8 lg:aspect-21/8"
-          />
-        </div>
-      </section>
-
-      <section className="border-b border-[#ddd8cc] px-4 py-10 md:px-6">
-        <div className="mx-auto max-w-[1280px] rounded-[1.15rem] border border-[#ddd8cc] bg-[#fbfaf6]">
-          <div className="grid gap-5 border-b border-[#ddd8cc] p-6 md:grid-cols-[1fr_auto] md:items-end">
-            <h2 className="max-w-xl font-display text-3xl leading-tight md:text-4xl">
-              Frontier hiring, deployed in <span className="text-[#189044]">every operation</span>
-            </h2>
-            <div className="flex flex-wrap">
-              {tabs.map((tab) => (
-                <span
-                  key={tab}
-                  className="border border-[#ddd8cc] bg-[#f7f5ef] px-5 py-3 text-sm font-medium first:rounded-l-md last:rounded-r-md"
-                >
-                  {tab}
-                </span>
-              ))}
-            </div>
-          </div>
-          <div className="grid gap-8 p-6 lg:grid-cols-[0.45fr_0.55fr]">
-            <div>
-              <p className="font-display text-2xl">Food operations</p>
-              <p className="mt-6 text-sm font-semibold">Role intake</p>
-              <p className="mt-2 max-w-sm text-sm leading-6 text-[#58544b]">
-                Open roles, a short application form, and CV upload are kept in one simple, focused
-                flow.
-              </p>
-              <div className="mt-10 rounded-md border border-[#ddd8cc] bg-[#f7f5ef] p-4 text-sm">
-                <p className="font-medium">Applicant note</p>
-                <p className="mt-2 text-[#58544b]">
-                  I can start immediately and have dispatch coordination experience.
+          <div className="relative">
+            <div className="absolute -left-5 top-8 hidden h-44 w-44 border border-[#6d9a70]/35 md:block" />
+            <div className="absolute -right-4 bottom-12 hidden h-28 w-28 border border-[#dfff67]/60 md:block" />
+            <div className="relative overflow-hidden rounded-[1.25rem] border border-[#becbb5] bg-[#e9eddf] shadow-[0_28px_70px_-40px_rgba(11,61,33,0.45)]">
+              <Image
+                src="/images/produce-for-lagos-field-team.jpeg"
+                alt="Produce for Lagos field team visiting an agricultural site."
+                width={4000}
+                height={2250}
+                priority
+                className="aspect-[5/4] w-full object-cover md:aspect-[4/5] lg:aspect-[5/4]"
+              />
+              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#102318]/92 via-[#102318]/50 to-transparent p-5 pt-20 text-white">
+                <p className="max-w-sm text-sm leading-6 text-[#e6f2dc]">
+                  A coordinated ecosystem for sourcing food, transporting it from production centres
+                  to organised markets, and strengthening food security for Lagos.
                 </p>
               </div>
             </div>
-            <HiringMap />
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="border-b border-[#ddd8cc] px-4 py-16 md:px-6">
-        <div className="mx-auto max-w-[1180px]">
-          <div className="flex items-start justify-between gap-6">
+      <section id="why-join" className="border-b border-[#d8d3c7] bg-[#fbfaf6] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-10 md:grid-cols-[0.8fr_1.2fr] md:items-start">
             <div>
-              <h2 className="font-display text-3xl md:text-4xl">
-                The full stack for <span className="text-[#189044]">hiring coordination</span>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                Why join Produce for Lagos?
+              </p>
+              <h2 className="mt-4 max-w-xl font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                Work that strengthens the systems feeding millions.
               </h2>
-              <p className="mt-5 max-w-3xl text-sm leading-6 text-[#58544b]">
-                Everything needed to take an applicant from interest to decision without a heavy
-                account system or disconnected spreadsheets.
+            </div>
+            <div className="space-y-6">
+              <p className="text-lg leading-8 text-[#41483f]">
+                By joining Produce for Lagos, you will be joining a mission with purpose.
+                You&apos;ll work alongside professionals in agriculture, infrastructure, logistics,
+                finance, technology, public policy and business to build solutions with lasting
+                impact.
+              </p>
+              <p className="text-base leading-7 text-[#5d6259]">
+                Whether you&apos;re an engineer, analyst, agronomist, software developer, marketer
+                or operations specialist, your work will contribute directly to strengthening food
+                security for millions.
+              </p>
+              <div className="grid gap-3 sm:grid-cols-2">
+                {missionStats.map((item) => {
+                  const Icon = item.icon;
+                  return (
+                    <div
+                      key={item.label}
+                      className="flex items-center gap-3 border-t border-[#d8d3c7] py-4"
+                    >
+                      <Icon className="size-5 text-[#0a5a32]" aria-hidden="true" />
+                      <span className="text-sm font-semibold text-[#243526]">{item.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="talent-community" className="border-b border-[#d8d3c7] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-8 rounded-[1rem] border border-[#0a5a32] bg-[#0a5a32] p-6 text-[#f3f5ea] md:grid-cols-[1fr_0.7fr] md:p-10">
+            <div>
+              <p className="text-sm font-semibold text-[#dfff67]">Join Our Talent Community</p>
+              <h2 className="mt-3 max-w-2xl font-display text-3xl font-semibold leading-tight tracking-tight md:text-5xl">
+                Share your profile, even if the right role is not open today.
+              </h2>
+              <p className="mt-5 max-w-3xl text-base leading-7 text-[#d8e8d0]">
+                To discover open roles, upload your CV, and get email updates across our food
+                operations network, please browse current vacancies. If the right opportunity for
+                you is not available today, we would love to stay connected.
               </p>
             </div>
-            <Button
-              nativeButton={false}
-              size="lg"
-              className="hidden bg-[#085b31] text-white hover:bg-[#0a6b3b] md:inline-flex"
-              render={<Link href="/jobs" />}
-            >
-              View roles
-            </Button>
-          </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-2">
-            {stack.map((item) => {
-              const Icon = item.icon;
-              return (
-                <div key={item.title} className="border border-[#ddd8cc] bg-[#fbfaf6] p-6">
-                  <div
-                    className={`flex min-h-48 items-center justify-center rounded-md ${item.media}`}
-                  >
-                    <div
-                      className={`flex size-16 items-center justify-center rounded-full border shadow-sm ${item.iconWrap}`}
-                    >
-                      <Icon className="size-7" aria-hidden="true" />
-                    </div>
-                  </div>
-                  <p className={`mt-5 text-xs font-semibold ${item.accent}`}>{item.eyebrow}</p>
-                  <h3 className="mt-2 font-display text-2xl">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#58544b]">{item.body}</p>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      </section>
-
-      <section id="flow" className="border-b border-[#ddd8cc] px-4 py-16 md:px-6">
-        <div className="mx-auto max-w-[1180px]">
-          <h2 className="font-display text-3xl md:text-4xl">
-            Application flow that is fast and accurate for{" "}
-            <span className="text-[#189044]">busy teams</span>
-          </h2>
-          <p className="mt-4 max-w-4xl text-sm leading-6 text-[#58544b]">
-            Apply once with a short form and your CV, then track your status by email.
-          </p>
-          <div className="relative mt-12 overflow-hidden border border-[#ddd8cc] bg-[#fbfaf6] p-8">
-            <div className="absolute -left-10 top-6 h-36 w-36 rounded-full border border-[#9ec5aa]" />
-            <div className="absolute -right-10 bottom-6 h-36 w-36 rounded-full border border-[#9ec5aa]" />
-            <div className="relative flex flex-wrap items-center justify-center gap-4">
-              {flow.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <div key={item.label} className="flex items-center gap-4">
-                    <div className="rounded-md border border-[#ddd8cc] bg-[#f7f5ef] px-4 py-3">
-                      <div className="flex items-center gap-2 text-sm font-medium">
-                        <Icon className="size-4 text-[#189044]" aria-hidden="true" />
-                        {item.label}
-                      </div>
-                    </div>
-                    {index < flow.length - 1 && (
-                      <ArrowRight className="hidden size-4 text-[#8a877d] md:block" />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            <div className="relative mt-8 flex flex-wrap justify-center gap-3">
-              {channels.map((channel) => (
-                <span
-                  key={channel}
-                  className="rounded-md border border-[#ddd8cc] bg-white px-4 py-2 text-sm text-[#58544b]"
-                >
-                  {channel}
-                </span>
-              ))}
+            <div className="flex flex-col justify-end gap-3">
+              <Button
+                nativeButton={false}
+                size="lg"
+                className="bg-[#dfff67] text-[#063b21] hover:bg-[#ecff93]"
+                render={<Link href="/jobs" />}
+              >
+                Browse current vacancies
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Button>
+              <p className="text-sm leading-6 text-[#bed8b7]">
+                As we continue to grow, we will reach out when opportunities aligned with your
+                experience become available.
+              </p>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="border-b border-[#ddd8cc] px-4 py-14 md:px-6">
-        <div className="mx-auto grid max-w-[1180px] gap-10 md:grid-cols-[0.9fr_1.1fr] md:items-center">
-          <div className="bg-[#55A630] rounded-3xl w-full h-full flex justify-center items-center">
-            <LayeredDeployGraphic />
-          </div>
-          <div>
-            <h2 className="font-display text-3xl leading-tight md:text-4xl">
-              Built for applicants.{" "}
-              <span className="text-[#189044]">From first look to offer.</span>
-            </h2>
-            <p className="mt-4 max-w-xl text-sm leading-6 text-[#58544b]">
-              Discover roles across our food operations network, apply in minutes, and stay informed
-              by email — no account required.
-            </p>
-            <div className="mt-8 divide-y divide-[#ddd8cc] border-y border-[#ddd8cc]">
-              {["Browse every open role", "Apply without an account", "Email status updates"].map(
-                (item) => (
-                  <div key={item} className="flex items-center gap-3 py-4">
-                    <CheckCircle2 className="size-4 text-[#189044]" aria-hidden="true" />
-                    <span className="text-sm font-medium">{item}</span>
-                  </div>
-                ),
-              )}
+      <section id="about" className="border-b border-[#d8d3c7] bg-[#fbfaf6] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-10 md:grid-cols-[0.95fr_1.05fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                Introducing Produce for Lagos
+              </p>
+              <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                An integrated public-private initiative transforming how food reaches Lagos.
+              </h2>
+            </div>
+            <div className="space-y-5 text-base leading-7 text-[#4f564d]">
+              <p>
+                By combining modern infrastructure, innovative financing, efficient logistics and
+                structured food trading, we are creating a more resilient, affordable and
+                transparent food ecosystem that benefits farmers, businesses and consumers alike.
+              </p>
+              <p>
+                Produce for Lagos brings together infrastructure, finance, logistics and commercial
+                trading into one coordinated ecosystem for sourcing food, transporting it from
+                production centers with efficient logistics to well-organised markets and on to the
+                final consumer.
+              </p>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
-      <section className="px-4 py-16 md:px-6">
-        <div className="mx-auto max-w-[1180px]">
-          <h2 className="font-display text-3xl md:text-4xl">Applicant questions</h2>
-          <div className="mt-8 grid gap-px overflow-hidden border border-[#ddd8cc] bg-[#ddd8cc] md:grid-cols-2">
-            {faqs.map(([question, answer]) => (
-              <div key={question} className="bg-[#fbfaf6] p-6">
-                <h3 className="font-display text-xl">{question}</h3>
-                <p className="mt-3 text-sm leading-6 text-[#58544b]">{answer}</p>
+      <section id="challenge" className="border-b border-[#d8d3c7] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                The Challenge
+              </p>
+              <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                Lagos sits at the epicentre of Nigeria&apos;s food security challenge.
+              </h2>
+            </div>
+            <div className="space-y-5 text-base leading-7 text-[#4f564d]">
+              <p>
+                Food security is one of the defining challenges of rapidly growing cities.
+                Nigeria&apos;s food economy is vast, dynamic, and under sustained pressure. The
+                national food market is valued at over ₦22 trillion annually, yet systemic
+                inefficiencies continue to drain its potential.
+              </p>
+              <p>
+                Each year, the country loses an estimated $8-10 billion to post-harvest
+                inefficiencies-eroding farmer incomes, fuelling price volatility, and undermining
+                national food security.
+              </p>
+              <p>
+                Today, much of Lagos&apos; food trade occurs through informal markets with limited
+                infrastructure, resulting in high post-harvest losses, poor price transparency, weak
+                quality assurance, food safety concerns, and significant logistics inefficiencies.
+              </p>
+            </div>
+          </div>
+          <div className="mt-12 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] sm:grid-cols-2 lg:grid-cols-5">
+            {challengeMetrics.map((metric) => (
+              <div key={metric.label} className="bg-[#fbfaf6] p-5 md:p-6">
+                <p className="font-display text-3xl font-semibold tracking-tight text-[#0a5a32]">
+                  {metric.value}
+                </p>
+                <p className="mt-3 text-sm leading-5 text-[#5d6259]">{metric.label}</p>
               </div>
             ))}
           </div>
-        </div>
+        </Container>
+      </section>
+
+      <section
+        id="mission"
+        className="border-b border-[#d8d3c7] bg-[#123321] py-14 text-[#f3f5ea] md:py-20"
+      >
+        <Container>
+          <div className="grid gap-10 md:grid-cols-[0.85fr_1.15fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#dfff67]">
+                Our Mission
+              </p>
+              <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight md:text-5xl">
+                Modernise the entire food value chain-from farm gate to final market.
+              </h2>
+            </div>
+            <div>
+              <p className="text-base leading-7 text-[#d8e8d0]">
+                Lagos requires a food system that is efficient, resilient and capable of serving one
+                of the world&apos;s fastest-growing urban populations. Produce for Lagos was created
+                to modernise the entire food value chain while creating economic opportunities
+                across Nigeria.
+              </p>
+              <div className="mt-8 divide-y divide-[#355842] border-y border-[#355842]">
+                {missionObjectives.map((objective) => (
+                  <div key={objective} className="flex gap-3 py-4">
+                    <CheckCircle2
+                      className="mt-0.5 size-5 shrink-0 text-[#dfff67]"
+                      aria-hidden="true"
+                    />
+                    <p className="text-sm leading-6 text-[#e8f1df]">{objective}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="culture" className="border-b border-[#d8d3c7] bg-[#fbfaf6] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-8 md:grid-cols-[1.1fr_0.9fr] md:items-center">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                Our Culture
+              </p>
+              <h2 className="mt-4 max-w-2xl font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                Collaboration across disciplines, with execution at the centre.
+              </h2>
+              <p className="mt-5 max-w-3xl text-base leading-7 text-[#4f564d]">
+                We believe the best ideas come from collaboration across disciplines. We value
+                integrity, innovation, excellence, curiosity and execution. Our teams are encouraged
+                to think boldly, solve complex problems and build systems that improve lives at
+                scale.
+              </p>
+            </div>
+            <div className="grid gap-3">
+              {["Integrity", "Innovation", "Excellence", "Curiosity", "Execution"].map((value) => (
+                <div key={value} className="flex items-center gap-3 border-t border-[#d8d3c7] py-4">
+                  <BadgeCheck className="size-5 text-[#0a5a32]" aria-hidden="true" />
+                  <span className="font-display text-xl font-semibold text-[#243526]">{value}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="companies" className="border-b border-[#d8d3c7] py-14 md:py-20">
+        <Container>
+          <div className="max-w-3xl">
+            <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+              Meet Our Companies
+            </p>
+            <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+              Four complementary pillars, one coordinated food system.
+            </h2>
+            <p className="mt-5 text-base leading-7 text-[#4f564d]">
+              Each company plays a distinct role, but together they create a modern food system that
+              delivers greater efficiency, lower costs, improved food quality and stronger market
+              resilience.
+            </p>
+          </div>
+          <div className="mt-10 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
+            {companies.map((company, index) => (
+              <article key={company.name} className="bg-[#fbfaf6] p-6 md:p-8">
+                <div className="flex min-h-16 items-start justify-between gap-4">
+                  <div>
+                    <p className="text-sm font-semibold text-[#0a5a32]">{company.shortName}</p>
+                    <h3 className="mt-2 font-display text-2xl font-semibold leading-tight text-[#173526]">
+                      {company.headline}
+                    </h3>
+                  </div>
+                  {company.logoSrc ? (
+                    <Image
+                      src={company.logoSrc}
+                      alt={`${company.shortName} logo`}
+                      width={index === 1 ? 160 : 130}
+                      height={80}
+                      className="max-h-14 w-auto object-contain"
+                    />
+                  ) : (
+                    <Network className="size-7 text-[#7e9b6e]" aria-hidden="true" />
+                  )}
+                </div>
+                <p className="mt-6 text-sm leading-6 text-[#4f564d]">{company.body}</p>
+              </article>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      <section id="vacancies" className="border-b border-[#d8d3c7] bg-[#fbfaf6] py-14 md:py-20">
+        <Container>
+          <div className="grid gap-10 lg:grid-cols-[0.75fr_1.25fr]">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                Current Vacancies
+              </p>
+              <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                Search by company or by function.
+              </h2>
+              <p className="mt-5 text-base leading-7 text-[#4f564d]">
+                People tend to think about their careers by career family. Choose a function to see
+                opportunities across P4L Fund, LAFSINCO, BulkFood, and EkoLog.
+              </p>
+              <Button
+                nativeButton={false}
+                size="lg"
+                className="mt-8 bg-[#0a5a32] text-white hover:bg-[#084727]"
+                render={<Link href="/jobs" />}
+              >
+                View all roles
+                <ArrowRight className="size-4" aria-hidden="true" />
+              </Button>
+            </div>
+            <div>
+              <div className="grid gap-2 sm:grid-cols-2">
+                {jobFamilies.map((family) => (
+                  <Link
+                    key={family}
+                    href={`/jobs?department=${encodeURIComponent(family)}`}
+                    className="group flex min-h-16 items-center justify-between gap-4 border border-[#d8d3c7] bg-white/70 px-4 py-3 text-sm font-semibold text-[#243526] transition-colors hover:border-[#7fad70] hover:bg-[#eef5e8]"
+                  >
+                    {family}
+                    <ArrowRight
+                      className="size-4 shrink-0 text-[#0a5a32] transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
+                {jobs.map((job) => (
+                  <Link
+                    key={job.id}
+                    href={`/jobs/${job.slug}`}
+                    className="border border-[#d8d3c7] bg-white p-5 transition-colors hover:border-[#7fad70]"
+                  >
+                    <p className="text-sm font-semibold text-[#0a5a32]">{job.entityName}</p>
+                    <h3 className="mt-2 font-display text-xl font-semibold text-[#173526]">
+                      {job.title}
+                    </h3>
+                    <p className="mt-3 text-sm text-[#5d6259]">
+                      {[job.department, job.location].filter(Boolean).join(" / ")}
+                    </p>
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Container>
+      </section>
+
+      <section id="faqs" className="py-14 md:py-20">
+        <Container>
+          <div className="flex flex-col justify-between gap-6 md:flex-row md:items-end">
+            <div>
+              <p className="text-sm font-semibold uppercase tracking-[0.18em] text-[#5f7f47]">
+                Applicant Frequently Asked Questions
+              </p>
+              <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
+                Applicant questions
+              </h2>
+            </div>
+            <ShieldCheck className="hidden size-12 text-[#0a5a32] md:block" aria-hidden="true" />
+          </div>
+          <div className="mt-8 grid gap-px overflow-hidden border border-[#d8d3c7] bg-[#d8d3c7] md:grid-cols-2">
+            {applicantFaqs.map((faq) => (
+              <div key={faq.question} className="bg-[#fbfaf6] p-6">
+                <h3 className="font-display text-xl font-semibold text-[#173526]">
+                  {faq.question}
+                </h3>
+                <p className="mt-3 text-sm leading-6 text-[#4f564d]">{faq.answer}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-10 flex flex-col items-start gap-4 border-t border-[#d8d3c7] pt-6 sm:flex-row sm:items-center sm:justify-between">
+            <p className="max-w-xl text-sm leading-6 text-[#5d6259]">
+              Open roles appear as they are published. If your preferred function is not hiring
+              today, check back as the programme continues to grow.
+            </p>
+            <Button
+              nativeButton={false}
+              size="lg"
+              className="bg-[#0a5a32] text-white hover:bg-[#084727]"
+              render={<Link href="/jobs" />}
+            >
+              Browse roles
+              <UsersRound className="size-4" aria-hidden="true" />
+            </Button>
+          </div>
+        </Container>
       </section>
     </div>
   );

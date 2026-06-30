@@ -5,28 +5,34 @@ import postgres from "postgres";
 
 import * as schema from "../_db/schema";
 
-const { entities, jobs, applications, applicationStatusEvents, emailLogs } = schema;
+const { entities, departments, jobs, applications, applicationStatusEvents, emailLogs } = schema;
 
 const ADMIN_EMAIL = process.env.ADMIN_NOTIFICATION_EMAIL ?? "admin@example.com";
 const CV_PLACEHOLDER = "https://storage.example.com/cvs/seed-sample-cv.pdf";
 
 const ENTITY_SEED = [
   {
-    name: "P4L",
-    slug: "p4l",
-    description: "Last-mile delivery and logistics arm of the Produce for Lagos group.",
-    isActive: true,
-  },
-  {
-    name: "Produce for Lagos App",
-    slug: "my-lagos-food-app",
-    description: "Flagship consumer food-ordering platform serving Lagos.",
+    name: "LAFSINCO",
+    slug: "lafsinco",
+    description: "Food systems infrastructure company for Lagos markets, hubs, and cold-chain.",
     isActive: true,
   },
   {
     name: "BulkFood",
     slug: "bulkfood",
-    description: "Wholesale and bulk food distribution business.",
+    description: "Commercial engine for structured food trading and bulk procurement.",
+    isActive: true,
+  },
+  {
+    name: "EkoLog",
+    slug: "ekolog",
+    description: "Technology-enabled logistics backbone for food movement into Lagos.",
+    isActive: true,
+  },
+  {
+    name: "Produce for Lagos Fund",
+    slug: "p4l-fund",
+    description: "Financing platform for food security, trading liquidity, and infrastructure.",
     isActive: true,
   },
   {
@@ -36,6 +42,20 @@ const ENTITY_SEED = [
     isActive: false,
   },
 ];
+
+const DEPARTMENT_SEED = [
+  { name: "Investment & Finance", slug: "investment-finance" },
+  { name: "Engineering & Infrastructure", slug: "engineering-infrastructure" },
+  { name: "Supply Chain & Logistics", slug: "supply-chain-logistics" },
+  { name: "Technology & Data", slug: "technology-data" },
+  { name: "Agriculture & Food Systems", slug: "agriculture-food-systems" },
+  { name: "Commercial & Trading", slug: "commercial-trading" },
+  { name: "Operations", slug: "operations" },
+  { name: "Strategy & Transformation", slug: "strategy-transformation" },
+  { name: "Marketing & Communications", slug: "marketing-communications" },
+  { name: "Corporate Services", slug: "corporate-services" },
+  { name: "Legal & Governance", slug: "legal-governance" },
+] as const;
 
 type JobSeed = {
   slug: string;
@@ -52,88 +72,88 @@ type JobSeed = {
 
 const JOB_SEED: JobSeed[] = [
   {
-    slug: "delivery-rider-p4l",
-    entitySlug: "p4l",
-    title: "Delivery Rider",
-    department: "Logistics",
+    slug: "infrastructure-project-manager-lafsinco",
+    entitySlug: "lafsinco",
+    title: "Infrastructure Project Manager",
+    department: "Engineering & Infrastructure",
     location: "Lagos",
     employmentType: "Full-time",
     status: "published",
-    description: "Deliver customer orders quickly and safely across Lagos.",
-    responsibilities: "Pick up and deliver orders; keep delivery times within SLA.",
-    requirements: "Valid rider's permit; familiarity with Lagos routes.",
+    description: "Coordinate market, hub, and cold-chain infrastructure delivery for Lagos.",
+    responsibilities: "Track project milestones; coordinate contractors; report delivery risks.",
+    requirements: "Infrastructure delivery experience; strong project controls discipline.",
   },
   {
-    slug: "operations-associate-p4l",
-    entitySlug: "p4l",
+    slug: "operations-associate-bulkfood",
+    entitySlug: "bulkfood",
     title: "Operations Associate",
     department: "Operations",
     location: "Lagos",
     employmentType: "Full-time",
     status: "published",
-    description: "Coordinate daily dispatch operations and rider scheduling.",
-    responsibilities: "Plan routes; monitor rider performance; resolve delivery issues.",
-    requirements: "1+ year in operations or logistics; strong organisation skills.",
+    description: "Coordinate daily structured trading operations across food categories.",
+    responsibilities: "Monitor order flow; resolve operating issues; coordinate trading partners.",
+    requirements: "1+ year in operations; strong organisation and stakeholder skills.",
   },
   {
-    slug: "dispatch-manager-p4l",
-    entitySlug: "p4l",
-    title: "Dispatch Manager",
-    department: "Logistics",
+    slug: "fleet-standards-manager-ekolog",
+    entitySlug: "ekolog",
+    title: "Fleet Standards Manager",
+    department: "Supply Chain & Logistics",
     location: "Lagos",
     employmentType: "Full-time",
     status: "closed",
-    description: "Own the dispatch function end to end.",
-    responsibilities: "Manage the rider fleet and dispatch KPIs.",
-    requirements: "3+ years managing logistics teams.",
+    description: "Standardise owned and third-party food transport operations.",
+    responsibilities: "Manage transporter performance; enforce safety and traceability standards.",
+    requirements: "3+ years managing logistics or fleet operations.",
   },
   {
-    slug: "frontend-engineer-mlfa",
-    entitySlug: "my-lagos-food-app",
-    title: "Frontend Engineer",
-    department: "Engineering",
+    slug: "data-platform-engineer-ekolog",
+    entitySlug: "ekolog",
+    title: "Data Platform Engineer",
+    department: "Technology & Data",
     location: "Remote (Lagos)",
     employmentType: "Full-time",
     status: "published",
-    description: "Build delightful ordering experiences in Next.js.",
-    responsibilities: "Ship features; collaborate with design; maintain quality.",
-    requirements: "Strong React/TypeScript; 2+ years experience.",
+    description: "Build data tools for traceability, performance monitoring, and logistics planning.",
+    responsibilities: "Ship product features; maintain data quality; support operational reporting.",
+    requirements: "Strong TypeScript and data modelling experience.",
   },
   {
-    slug: "customer-support-mlfa",
-    entitySlug: "my-lagos-food-app",
-    title: "Customer Support Agent",
-    department: "Support",
+    slug: "communications-lead-p4l-fund",
+    entitySlug: "p4l-fund",
+    title: "Communications Lead",
+    department: "Marketing & Communications",
     location: "Lagos",
     employmentType: "Contract",
     status: "published",
-    description: "Help customers resolve order issues over chat and phone.",
-    responsibilities: "Respond to tickets; escalate where needed; keep CSAT high.",
-    requirements: "Excellent communication; prior support experience a plus.",
+    description: "Shape stakeholder communications for food-security financing initiatives.",
+    responsibilities: "Write updates; coordinate campaigns; manage partner communications.",
+    requirements: "Excellent writing; prior public-private initiative experience is a plus.",
   },
   {
-    slug: "warehouse-supervisor-bulkfood",
+    slug: "commodity-trading-analyst-bulkfood",
     entitySlug: "bulkfood",
-    title: "Warehouse Supervisor",
-    department: "Warehouse",
+    title: "Commodity Trading Analyst",
+    department: "Commercial & Trading",
     location: "Ogun",
     employmentType: "Full-time",
     status: "published",
-    description: "Supervise inbound and outbound warehouse operations.",
-    responsibilities: "Manage stock accuracy; supervise warehouse staff.",
-    requirements: "2+ years in warehouse operations.",
+    description: "Support structured procurement, demand aggregation, and food trading decisions.",
+    responsibilities: "Analyse pricing; monitor supplier performance; prepare trading reports.",
+    requirements: "Commercial analysis experience in food, FMCG, or commodities.",
   },
   {
-    slug: "procurement-officer-bulkfood",
-    entitySlug: "bulkfood",
-    title: "Procurement Officer",
-    department: "Procurement",
+    slug: "investment-associate-p4l-fund",
+    entitySlug: "p4l-fund",
+    title: "Investment Associate",
+    department: "Investment & Finance",
     location: "Lagos",
     employmentType: "Full-time",
     status: "draft",
-    description: "Source produce and negotiate with suppliers.",
-    responsibilities: "Manage supplier relationships; control procurement costs.",
-    requirements: "Procurement experience in FMCG or food.",
+    description: "Support financing structures for strategic food-system investments.",
+    responsibilities: "Model transactions; prepare investment memos; monitor portfolio activity.",
+    requirements: "Investment analysis or project finance experience.",
   },
 ];
 
@@ -150,7 +170,7 @@ type AppSeed = {
 
 const APPLICATION_SEED: AppSeed[] = [
   {
-    jobSlug: "delivery-rider-p4l",
+    jobSlug: "infrastructure-project-manager-lafsinco",
     name: "Adaeze Okafor",
     phone: "+2348012345678",
     email: "adaeze@example.com",
@@ -159,7 +179,7 @@ const APPLICATION_SEED: AppSeed[] = [
     status: "submitted",
   },
   {
-    jobSlug: "frontend-engineer-mlfa",
+    jobSlug: "data-platform-engineer-ekolog",
     name: "Chidi Eze",
     phone: "+2348023456789",
     email: "chidi@example.com",
@@ -169,7 +189,7 @@ const APPLICATION_SEED: AppSeed[] = [
     adminNote: "Strong portfolio, moved to offer stage.",
   },
   {
-    jobSlug: "warehouse-supervisor-bulkfood",
+    jobSlug: "commodity-trading-analyst-bulkfood",
     name: "Ngozi Bello",
     phone: "+2348034567890",
     email: "ngozi@example.com",
@@ -179,7 +199,7 @@ const APPLICATION_SEED: AppSeed[] = [
     adminNote: "Insufficient warehouse leadership experience.",
   },
   {
-    jobSlug: "customer-support-mlfa",
+    jobSlug: "communications-lead-p4l-fund",
     name: "Tunde Balogun",
     phone: "+2348045678901",
     email: "tunde@example.com",
@@ -188,7 +208,7 @@ const APPLICATION_SEED: AppSeed[] = [
     status: "submitted",
   },
   {
-    jobSlug: "operations-associate-p4l",
+    jobSlug: "operations-associate-bulkfood",
     name: "Fatima Yusuf",
     phone: "+2348056789012",
     email: "fatima@example.com",
@@ -212,6 +232,19 @@ async function main() {
     await db.insert(entities).values(ENTITY_SEED).onConflictDoNothing({ target: entities.slug });
     const entityRows = await db.select().from(entities);
     const entityIdBySlug = new Map(entityRows.map((e) => [e.slug, e.id]));
+
+    console.log("Seeding departments...");
+    await db
+      .insert(departments)
+      .values(
+        DEPARTMENT_SEED.map((department) => ({
+          name: department.name,
+          slug: department.slug,
+          entityId: null,
+          isActive: true,
+        })),
+      )
+      .onConflictDoNothing({ target: departments.slug });
 
     console.log("Seeding jobs...");
     await db
