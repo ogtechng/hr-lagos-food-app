@@ -15,11 +15,13 @@ import {
 } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
+import { HeroImageSlider } from "@/components/shared/hero-image-slider";
 import { Button } from "@/components/ui/button";
 import {
   applicantFaqs,
   challengeMetrics,
   companies,
+  jobFamilies,
   missionObjectives,
 } from "@/config/public-careers-content";
 import { make_jobs_service } from "@/features/jobs/services";
@@ -36,6 +38,17 @@ async function getLandingData() {
     return { jobs: [], openRoleCount: 0 };
   }
 }
+
+const heroSlides = [
+  {
+    src: "https://res.cloudinary.com/dsh9lmk7j/image/upload/v1783003479/portrait-african-woman-posing-office-desk-looking-camera-while-holding-cup_psg8ji.jpg",
+    alt: "Produce for Lagos team member at her office desk.",
+  },
+  {
+    src: "https://res.cloudinary.com/dsh9lmk7j/image/upload/v1783003097/young-businessman-sitting-office-desk-looking-camera.jpg_jempda.jpg",
+    alt: "Produce for Lagos team member at his office desk.",
+  },
+];
 
 const missionStats = [
   { label: "Infrastructure", icon: Factory },
@@ -99,15 +112,8 @@ export default async function PublicHomePage() {
             <div className="absolute -left-5 top-8 hidden h-44 w-44 border border-[#6d9a70]/35 md:block" />
             <div className="absolute -right-4 bottom-12 hidden h-28 w-28 border border-[#dfff67]/60 md:block" />
             <div className="relative overflow-hidden rounded-[2rem] border border-[#becbb5] bg-[#e9eddf] shadow-[0_28px_70px_-40px_rgba(11,61,33,0.45)]">
-              <Image
-                src="/images/produce-for-lagos-field-team.jpeg"
-                alt="Produce for Lagos field team visiting an agricultural site."
-                width={4000}
-                height={2250}
-                priority
-                className="aspect-[5/4] w-full object-cover md:aspect-[4/5] lg:aspect-[5/4]"
-              />
-              <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#102318]/92 via-[#102318]/50 to-transparent p-5 pt-20 text-white">
+              <HeroImageSlider slides={heroSlides} />
+              <div className="pointer-events-none absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#102318]/92 via-[#102318]/50 to-transparent p-5 pt-20 text-white">
                 <p className="max-w-sm text-sm leading-6 text-[#e6f2dc]">
                   A coordinated ecosystem for sourcing food, transporting it from production centres
                   to organised markets, and strengthening food security for Lagos.
@@ -359,9 +365,19 @@ export default async function PublicHomePage() {
                     <Image
                       src={company.logoSrc}
                       alt={`${company.shortName} logo`}
-                      width={index === 1 ? 160 : 130}
-                      height={80}
-                      className="max-h-14 w-auto object-contain"
+                      width={
+                        company.shortName === "LAFSINCO" || company.shortName === "EkoLog"
+                          ? 200
+                          : index === 1
+                            ? 160
+                            : 130
+                      }
+                      height={100}
+                      className={`w-auto object-contain ${
+                        company.shortName === "LAFSINCO" || company.shortName === "EkoLog"
+                          ? "max-h-20"
+                          : "max-h-14"
+                      }`}
                     />
                   ) : (
                     <Network className="size-7 text-[#7e9b6e]" aria-hidden="true" />
@@ -382,11 +398,11 @@ export default async function PublicHomePage() {
                 Current Vacancies
               </p>
               <h2 className="mt-4 font-display text-4xl font-semibold leading-tight tracking-tight text-[#173526] md:text-5xl">
-                Explore the roles currently open.
+                Search by company or by function.
               </h2>
               <p className="mt-5 text-base leading-7 text-[#4f564d]">
-                Open opportunities appear as they are published across P4L Fund, LAFSINCO,
-                BulkFood, and EkoLog.
+                People tend to think about their careers by career family. Choose a function to see
+                opportunities across P4L Fund, LAFSINCO, BulkFood, and EkoLog.
               </p>
               <Button
                 nativeButton={false}
@@ -399,7 +415,22 @@ export default async function PublicHomePage() {
               </Button>
             </div>
             <div>
-              <div className="grid gap-4 md:grid-cols-2">
+              <div className="grid gap-2 sm:grid-cols-2">
+                {jobFamilies.map((family) => (
+                  <Link
+                    key={family}
+                    href={`/jobs?department=${encodeURIComponent(family)}`}
+                    className="group flex min-h-16 items-center justify-between gap-4 rounded-[1rem] border border-[#d8d3c7] bg-white/70 px-4 py-3 text-sm font-semibold text-[#243526] transition-colors hover:border-[#7fad70] hover:bg-[#eef5e8]"
+                  >
+                    {family}
+                    <ArrowRight
+                      className="size-4 shrink-0 text-[#0a5a32] transition-transform group-hover:translate-x-0.5"
+                      aria-hidden="true"
+                    />
+                  </Link>
+                ))}
+              </div>
+              <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {jobs.map((job) => (
                   <Link
                     key={job.id}

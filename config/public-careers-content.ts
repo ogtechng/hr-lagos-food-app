@@ -34,7 +34,7 @@ export const companies = [
     shortName: "LAFSINCO",
     headline: "Building Food Systems Infrastructure",
     body: "LAFSINCO develops, owns and operates the physical backbone of Lagos' food system-from integrated logistics hubs and wholesale markets to cold-chain facilities, processing centres and supporting infrastructure. It is creating the modern market architecture that enables food to move efficiently from producers to consumers.",
-    logoSrc: null,
+    logoSrc: "/images/lafsinco-logo.png",
   },
   {
     name: "Bulk Food Company (BFCON)",
@@ -48,7 +48,7 @@ export const companies = [
     shortName: "EkoLog",
     headline: "Moving Food Better",
     body: "EkoLog provides the logistics backbone of the ecosystem, transforming fragmented transport networks into a coordinated, technology-enabled food movement system with traceability, performance monitoring, safety standards, and delivery reliability across the value chain.",
-    logoSrc: null,
+    logoSrc: "/images/ekolog-logo.svg",
   },
   {
     name: "Produce for Lagos Fund",

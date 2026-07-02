@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { ArrowRight, BriefcaseBusiness } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 
 import { Container } from "@/components/shared/container";
 import { Section } from "@/components/shared/section";
@@ -79,22 +78,6 @@ export default async function JobsPage({ searchParams }: JobsPageProps) {
               LAFSINCO, BulkFood, and EkoLog.
             </p>
           </div>
-        </div>
-
-        <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
-          {jobFamilies.map((family) => (
-            <Link
-              key={family}
-              href={`/jobs?department=${encodeURIComponent(family)}`}
-              className="group flex min-h-14 items-center justify-between gap-3 border border-[#d8d3c7] bg-white/80 px-4 py-3 text-sm font-semibold text-[#243526] transition-colors hover:border-[#7fad70] hover:bg-[#eef5e8]"
-            >
-              {family}
-              <ArrowRight
-                className="size-4 shrink-0 text-[#0a5a32] transition-transform group-hover:translate-x-0.5"
-                aria-hidden="true"
-              />
-            </Link>
-          ))}
         </div>
 
         <JobFilters
