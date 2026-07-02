@@ -415,7 +415,7 @@ export default async function PublicHomePage() {
               </Button>
             </div>
             <div>
-              <div className="grid gap-2 sm:grid-cols-2">
+              {/* <div className="grid gap-2 sm:grid-cols-2">
                 {jobFamilies.map((family) => (
                   <Link
                     key={family}
@@ -429,7 +429,7 @@ export default async function PublicHomePage() {
                     />
                   </Link>
                 ))}
-              </div>
+              </div> */}
               <div className="mt-8 grid gap-4 md:grid-cols-2">
                 {jobs.map((job) => (
                   <Link
